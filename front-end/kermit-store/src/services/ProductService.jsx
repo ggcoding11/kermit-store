@@ -15,6 +15,8 @@ export const updateProduct = (id, product) => {
   return axios.put(urlProducts + "/" + id, product);
 };
 
-export const createProduct = (product) => {};
+export const createProduct = (product) => {
+  return axios.post(urlProducts, product);
+};
 
 export const deleteProduct = (id) => {};

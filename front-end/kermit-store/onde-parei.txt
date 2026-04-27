@@ -1,1 +1,1 @@
-- Terminar a página de update
+- Continuar a integração do backend (parei no POST)

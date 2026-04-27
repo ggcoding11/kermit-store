@@ -1,17 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
 import "../css/Create.css";
 import { motion } from "framer-motion";
+import { createProduct } from "../services/ProductService";
 
 const Create = () => {
+  const [name, setName] = useState("");
+  const [brand, setBrand] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [imageName, setImageName] = useState("Teste");
+  const [creationDate, setCreationDate] = useState(
+    new Date().toISOString().split("T")[0],
+  );
+  const [quantity, setQuantity] = useState("");
+  const [description, setDescription] = useState("");
+
   const navigate = useNavigate();
+
+  const handleCreate = (e) => {
+    e.preventDefault();
+
+    const product = {
+      name,
+      brand,
+      price,
+      category,
+      imageName,
+      creationDate,
+      quantity,
+      description,
+    };
+
+    createProduct(product)
+      .then(() => {
+        alert("The new product was added to database!");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="container min-vh-100 d-flex flex-column justify-content-center p-2">
       <h1 className="text-center mb-4">New product</h1>
 
-      <form>
+      <form onSubmit={handleCreate}>
         <div className="mb-3">
           <label className="form-label w-100">
             Name:
@@ -19,6 +55,9 @@ const Create = () => {
               type="text"
               placeholder="Xbox 360"
               className="form-control"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
             />
           </label>
         </div>
@@ -30,6 +69,9 @@ const Create = () => {
               type="text"
               placeholder="Microsoft"
               className="form-control"
+              value={brand}
+              onChange={(e) => setBrand(e.target.value)}
+              required
             />
           </label>
         </div>
@@ -47,6 +89,9 @@ const Create = () => {
                 thousandSeparator="."
                 decimalSeparator=","
                 className="form-control"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
               />
             </label>
           </div>
@@ -57,6 +102,9 @@ const Create = () => {
                 type="text"
                 placeholder="Eletronics"
                 className="form-control"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
               />
             </label>
           </div>
@@ -77,6 +125,9 @@ const Create = () => {
                 allowNegative={false}
                 decimalScale={0}
                 className="form-control"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                required
               />
             </label>
           </div>
@@ -88,6 +139,9 @@ const Create = () => {
             <textarea
               placeholder="The product includes: 1 console, 2 controllers, and 1 accessory (Kinect)."
               className="form-control"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
             />
           </label>
         </div>
