@@ -2,41 +2,61 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { useNavigate, useParams } from "react-router-dom";
-import { data } from "../data/Data";
+import { getProductById, updateProduct } from "../services/ProductService";
 
 const Update = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-
-  const [product, setProduct] = useState(null);
-
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
+  const [imageName, setImageName] = useState("");
+  const [creationDate, setCreationDate] = useState("");
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    setProduct(data.find((p) => p.id == id));
+    getProductById(id)
+      .then((product) => {
+        setName(product.data.name);
+        setBrand(product.data.brand);
+        setPrice(product.data.price);
+        setCategory(product.data.category);
+        setImageName(product.data.imageName);
+        setCreationDate(product.data.creationDate);
+        setQuantity(product.data.quantity);
+        setDescription(product.data.description);
+      })
+      .catch((error) => console.log(error));
   }, [id]);
 
-  useEffect(() => {
-    if (product != null) {
-      setName(product.name);
-      setBrand(product.brand);
-      setPrice(product.price);
-      setCategory(product.category);
-      setQuantity(product.quantity);
-      setDescription(product.description);
-    }
-  }, [product]);
+  const handleUpdate = (e) => {
+    e.preventDefault();
+
+    const product = {
+      name,
+      brand,
+      price,
+      category,
+      imageName,
+      creationDate,
+      quantity,
+      description,
+    };
+
+    updateProduct(id, product)
+      .then((response) => {
+        alert("The product was updated!")
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div className="container min-vh-100 d-flex flex-column justify-content-center p-2">
       <h1 className="text-center mb-4">Edit product</h1>
 
-      <form>
+      <form onSubmit={handleUpdate}>
         <div className="mb-3">
           <label className="form-label w-100">
             Name:
@@ -46,6 +66,7 @@ const Update = () => {
               className="form-control"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
           </label>
         </div>
@@ -59,6 +80,7 @@ const Update = () => {
               className="form-control"
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
+              required
             />
           </label>
         </div>
@@ -78,6 +100,7 @@ const Update = () => {
                 className="form-control"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
+                required
               />
             </label>
           </div>
@@ -90,6 +113,7 @@ const Update = () => {
                 className="form-control"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
+                required
               />
             </label>
           </div>
@@ -112,6 +136,7 @@ const Update = () => {
                 className="form-control"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
+                required
               />
             </label>
           </div>
@@ -125,6 +150,7 @@ const Update = () => {
               className="form-control"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              required
             />
           </label>
         </div>

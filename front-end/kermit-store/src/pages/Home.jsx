@@ -1,15 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdSort } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "../css/Home.css";
 import { motion } from "framer-motion";
-import { data } from "../data/Data";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
+import { getAllProducts } from "../services/ProductService";
 
 const Home = () => {
+  const [products, setProducts] = useState(null);
+  const [params, setParams] = useState(null);
+
+  useEffect(() => {
+    getAllProducts(params)
+      .then((products) => {
+        setProducts(products.data);
+      })
+      .catch((error) => console.log(error));
+  }, [params]);
+
   const navigate = useNavigate();
 
   const [openDelete, setOpenDelete] = useState(false);
@@ -88,38 +99,44 @@ const Home = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((product) => (
-                    <tr key={product.id}>
-                      <th scope="row">{product.id}</th>
-                      <td>{product.name}</td>
-                      <td>{product.brand}</td>
-                      <td>{product.category}</td>
-                      <td>{product.image}</td>
-                      <td>{product.createdAt}</td>
-                      <td>{product.price}</td>
-                      <td className="d-flex gap-2">
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="btn btn-primary"
-                          onClick={() => navigate(`/update/${product.id}`)}
-                        >
-                          Edit
-                        </motion.button>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="btn btn-danger"
-                          onClick={() => {
-                            onOpenModalDelete();
-                            setIdToDelete(product.id);
-                          }}
-                        >
-                          Delete
-                        </motion.button>
-                      </td>
-                    </tr>
-                  ))}
+                  {products &&
+                    products.map((product) => (
+                      <tr key={product.id}>
+                        <th scope="row">{product.id}</th>
+                        <td>{product.name}</td>
+                        <td>{product.brand}</td>
+                        <td>{product.category}</td>
+                        <td>{product.imageName}</td>
+                        <td>{product.creationDate}</td>
+                        <td>
+                          {new Intl.NumberFormat("pt-BR", {
+                            style: "currency",
+                            currency: "BRL",
+                          }).format(product.price)}
+                        </td>
+                        <td className="d-flex gap-2">
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="btn btn-primary"
+                            onClick={() => navigate(`/update/${product.id}`)}
+                          >
+                            Edit
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="btn btn-danger"
+                            onClick={() => {
+                              onOpenModalDelete();
+                              setIdToDelete(product.id);
+                            }}
+                          >
+                            Delete
+                          </motion.button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -201,6 +218,33 @@ const Home = () => {
           <h1 className="text-center fs-3">Sort products</h1>
 
           <div>
+            <h3 className="fs-4">By product id:</h3>
+
+            <div className="d-flex gap-2">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn btn-primary"
+                onClick={() => {
+                  setParams({ field: "id", direction: "asc" });
+                }}
+              >
+                Ascending
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn btn-danger"
+                onClick={() => {
+                  setParams({ field: "id", direction: "desc" });
+                }}
+              >
+                Descending
+              </motion.button>
+            </div>
+          </div>
+
+          <div>
             <h3 className="fs-4">By product name:</h3>
 
             <div className="d-flex gap-2">
@@ -208,6 +252,9 @@ const Home = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn btn-primary"
+                onClick={() => {
+                  setParams({ field: "name", direction: "asc" });
+                }}
               >
                 A-Z
               </motion.button>
@@ -215,6 +262,9 @@ const Home = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn btn-danger"
+                onClick={() => {
+                  setParams({ field: "name", direction: "desc" });
+                }}
               >
                 Z-A
               </motion.button>
@@ -229,6 +279,9 @@ const Home = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn btn-primary"
+                onClick={() => {
+                  setParams({ field: "price", direction: "asc" });
+                }}
               >
                 Ascending
               </motion.button>
@@ -236,6 +289,9 @@ const Home = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn btn-danger"
+                onClick={() => {
+                  setParams({ field: "price", direction: "desc" });
+                }}
               >
                 Descending
               </motion.button>

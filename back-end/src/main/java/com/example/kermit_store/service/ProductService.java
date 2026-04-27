@@ -17,8 +17,7 @@ public class ProductService {
 
     public List<ProductResponseDTO> listarTodos(String field, String direction) {
         Sort sort = direction.equalsIgnoreCase("desc")
-                ? Sort.by(field).descending()
-                : Sort.by(field).ascending();
+                ? Sort.by(field).descending() : Sort.by(field).ascending();
 
         List<Product> products = repository.findAll(sort);
 

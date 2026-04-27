@@ -14,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -22,10 +23,10 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponseDTO>> listarTodos(
-      @RequestParam(defaultValue = "name") String sort,
+      @RequestParam(defaultValue = "id") String field,
       @RequestParam(defaultValue = "asc") String direction
     ) {
-        List<ProductResponseDTO> request = service.listarTodos(sort, direction);
+        List<ProductResponseDTO> request = service.listarTodos(field, direction);
 
         return ResponseEntity.status(HttpStatus.OK).body(request);
     }
