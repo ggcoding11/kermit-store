@@ -1,1 +1,2 @@
 - Continuar a integração do backend (parei no POST)
+- Retire o Creation Date do DTO para UPDATE, não faz sentido eu alterar a data que um produto foi criado se eu só quero alterá-lo
