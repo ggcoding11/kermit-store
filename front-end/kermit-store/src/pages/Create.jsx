@@ -10,7 +10,7 @@ const Create = () => {
   const [brand, setBrand] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [imageName, setImageName] = useState("Teste");
+  const [image, setImage] = useState(null);
   const [creationDate, setCreationDate] = useState(
     new Date().toISOString().split("T")[0],
   );
@@ -27,11 +27,13 @@ const Create = () => {
       brand,
       price,
       category,
-      imageName,
+      image,
       creationDate,
       quantity,
       description,
     };
+
+    console.log(product);
 
     createProduct(product)
       .then(() => {
@@ -90,7 +92,7 @@ const Create = () => {
                 decimalSeparator=","
                 className="form-control"
                 value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                onValueChange={(values) => setPrice(values.floatValue)}
                 required
               />
             </label>
@@ -98,14 +100,29 @@ const Create = () => {
           <div className="col-12 col-sm-6">
             <label className="form-label w-100">
               Category:
-              <input
-                type="text"
-                placeholder="Eletronics"
-                className="form-control"
+              <select
+                className="form-select"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 required
-              />
+              >
+                <option value="">Select the category</option>
+                <option value="ELECTRONICS">Electronics</option>
+                <option value="CLOTHING">Clothing</option>
+                <option value="FOOD">Food</option>
+                <option value="BEVERAGES">Beverages</option>
+                <option value="BOOKS">Books</option>
+                <option value="HOME_APPLIANCES">Home Appliances</option>
+                <option value="FURNITURE">Furniture</option>
+                <option value="BEAUTY">Beauty</option>
+                <option value="HEALTH">Health</option>
+                <option value="SPORTS">Sports</option>
+                <option value="TOYS">Toys</option>
+                <option value="AUTOMOTIVE">Automotive</option>
+                <option value="OFFICE_SUPPLIES">Office Supplies</option>
+                <option value="PET_SUPPLIES">Pet Supplies</option>
+                <option value="OTHER">Other</option>
+              </select>
             </label>
           </div>
         </div>
@@ -114,7 +131,15 @@ const Create = () => {
           <div className="col-12 col-sm-6">
             <label className="form-label w-100">
               Product image:
-              <input className="form-control" type="file" />
+              <input
+                className="form-control"
+                type="file"
+                accept="image/*"
+                value={image}
+                onChange={(e) => {
+                  setImage(e.target.files[0]);
+                }}
+              />
             </label>
           </div>
           <div className="col-12 col-sm-6">

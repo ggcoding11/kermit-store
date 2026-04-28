@@ -16,7 +16,13 @@ export const updateProduct = (id, product) => {
 };
 
 export const createProduct = (product) => {
+  const formData = new FormData();
+
+  formData.append("name", product.name)
+
   return axios.post(urlProducts, product);
 };
 
-export const deleteProduct = (id) => {};
+export const deleteProduct = (id) => {
+  return axios.delete(urlProducts + "/" + id);
+};

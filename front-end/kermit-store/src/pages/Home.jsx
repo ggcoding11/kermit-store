@@ -7,19 +7,23 @@ import "../css/Home.css";
 import { motion } from "framer-motion";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
-import { getAllProducts } from "../services/ProductService";
+import { deleteProduct, getAllProducts } from "../services/ProductService";
+import Loading from "../components/Loading";
 
 const Home = () => {
   const [products, setProducts] = useState(null);
   const [params, setParams] = useState(null);
+  const [reload, setReload] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getAllProducts(params)
       .then((products) => {
         setProducts(products.data);
+        setLoading(false);
       })
       .catch((error) => console.log(error));
-  }, [params]);
+  }, [params, reload]);
 
   const navigate = useNavigate();
 
@@ -33,8 +37,20 @@ const Home = () => {
 
   const [idToDelete, setIdToDelete] = useState("");
 
-  const deleteProduct = () => {
-    alert("Produto " + idToDelete + " foi deletado!");
+  const handleDelete = () => {
+    deleteProduct(idToDelete)
+      .then((response) => {
+        setReload(response);
+        onCloseModalDelete();
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const formatCategory = (category) => {
+    return category
+      .toLowerCase()
+      .replaceAll("_", " ")
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   };
 
   return (
@@ -84,62 +100,66 @@ const Home = () => {
 
         <div className="row mb-4">
           <div className="col-12">
-            <div className="table-responsive">
-              <table className="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Brand</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Created at</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products &&
-                    products.map((product) => (
-                      <tr key={product.id}>
-                        <th scope="row">{product.id}</th>
-                        <td>{product.name}</td>
-                        <td>{product.brand}</td>
-                        <td>{product.category}</td>
-                        <td>{product.imageName}</td>
-                        <td>{product.creationDate}</td>
-                        <td>
-                          {new Intl.NumberFormat("pt-BR", {
-                            style: "currency",
-                            currency: "BRL",
-                          }).format(product.price)}
-                        </td>
-                        <td className="d-flex gap-2">
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="btn btn-primary"
-                            onClick={() => navigate(`/update/${product.id}`)}
-                          >
-                            Edit
-                          </motion.button>
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="btn btn-danger"
-                            onClick={() => {
-                              onOpenModalDelete();
-                              setIdToDelete(product.id);
-                            }}
-                          >
-                            Delete
-                          </motion.button>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
+            {loading ? (
+              <Loading />
+            ) : (
+              <div className="table-responsive">
+                <table className="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Brand</th>
+                      <th scope="col">Category</th>
+                      <th scope="col">Image</th>
+                      <th scope="col">Created at</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {products &&
+                      products.map((product) => (
+                        <tr key={product.id}>
+                          <th scope="row">{product.id}</th>
+                          <td>{product.name}</td>
+                          <td>{product.brand}</td>
+                          <td>{formatCategory(product.category)}</td>
+                          <td>{product.imageName}</td>
+                          <td>{product.creationDate}</td>
+                          <td>
+                            {new Intl.NumberFormat("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            }).format(product.price)}
+                          </td>
+                          <td className="d-flex gap-2">
+                            <motion.button
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              className="btn btn-primary"
+                              onClick={() => navigate(`/update/${product.id}`)}
+                            >
+                              Edit
+                            </motion.button>
+                            <motion.button
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              className="btn btn-danger"
+                              onClick={() => {
+                                onOpenModalDelete();
+                                setIdToDelete(product.id);
+                              }}
+                            >
+                              Delete
+                            </motion.button>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
 
@@ -193,7 +213,7 @@ const Home = () => {
           </h1>
 
           <div className="d-flex justify-content-evenly">
-            <button className="btn btn-danger" onClick={() => deleteProduct()}>
+            <button className="btn btn-danger" onClick={() => handleDelete()}>
               Deletar
             </button>
             <button
@@ -227,6 +247,7 @@ const Home = () => {
                 className="btn btn-primary"
                 onClick={() => {
                   setParams({ field: "id", direction: "asc" });
+                  onCloseModalSort();
                 }}
               >
                 Ascending
@@ -237,6 +258,7 @@ const Home = () => {
                 className="btn btn-danger"
                 onClick={() => {
                   setParams({ field: "id", direction: "desc" });
+                  onCloseModalSort();
                 }}
               >
                 Descending
@@ -254,6 +276,7 @@ const Home = () => {
                 className="btn btn-primary"
                 onClick={() => {
                   setParams({ field: "name", direction: "asc" });
+                  onCloseModalSort();
                 }}
               >
                 A-Z
@@ -264,6 +287,7 @@ const Home = () => {
                 className="btn btn-danger"
                 onClick={() => {
                   setParams({ field: "name", direction: "desc" });
+                  onCloseModalSort();
                 }}
               >
                 Z-A
@@ -281,6 +305,7 @@ const Home = () => {
                 className="btn btn-primary"
                 onClick={() => {
                   setParams({ field: "price", direction: "asc" });
+                  onCloseModalSort();
                 }}
               >
                 Ascending
@@ -291,6 +316,7 @@ const Home = () => {
                 className="btn btn-danger"
                 onClick={() => {
                   setParams({ field: "price", direction: "desc" });
+                  onCloseModalSort();
                 }}
               >
                 Descending

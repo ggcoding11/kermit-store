@@ -50,7 +50,6 @@ public class ProductService {
         antigo.setQuantity(novo.getQuantity());
         antigo.setCategory(novo.getCategory());
         antigo.setPrice(novo.getPrice());
-        antigo.setCreationDate(novo.getCreationDate());
         antigo.setImageName(novo.getImageName());
         antigo.setDescription(novo.getDescription());
 

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProductById, updateProduct } from "../services/ProductService";
+import Loading from "../components/Loading";
 
 const Update = () => {
   const navigate = useNavigate();
@@ -12,9 +13,9 @@ const Update = () => {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [imageName, setImageName] = useState("");
-  const [creationDate, setCreationDate] = useState("");
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getProductById(id)
@@ -24,9 +25,9 @@ const Update = () => {
         setPrice(product.data.price);
         setCategory(product.data.category);
         setImageName(product.data.imageName);
-        setCreationDate(product.data.creationDate);
         setQuantity(product.data.quantity);
         setDescription(product.data.description);
+        setLoading(false);
       })
       .catch((error) => console.log(error));
   }, [id]);
@@ -40,14 +41,13 @@ const Update = () => {
       price,
       category,
       imageName,
-      creationDate,
       quantity,
       description,
     };
 
     updateProduct(id, product)
       .then((response) => {
-        alert("The product was updated!")
+        alert("The product was updated!");
       })
       .catch((error) => console.log(error));
   };
@@ -57,124 +57,130 @@ const Update = () => {
       <h1 className="text-center mb-4">Edit product</h1>
 
       <form onSubmit={handleUpdate}>
-        <div className="mb-3">
-          <label className="form-label w-100">
-            Name:
-            <input
-              type="text"
-              placeholder="Xbox 360"
-              className="form-control"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </label>
-        </div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <div className="mb-3">
+              <label className="form-label w-100">
+                Name:
+                <input
+                  type="text"
+                  placeholder="Xbox 360"
+                  className="form-control"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </label>
+            </div>
 
-        <div className="mb-3">
-          <label className="form-label w-100">
-            Brand:
-            <input
-              type="text"
-              placeholder="Microsoft"
-              className="form-control"
-              value={brand}
-              onChange={(e) => setBrand(e.target.value)}
-              required
-            />
-          </label>
-        </div>
+            <div className="mb-3">
+              <label className="form-label w-100">
+                Brand:
+                <input
+                  type="text"
+                  placeholder="Microsoft"
+                  className="form-control"
+                  value={brand}
+                  onChange={(e) => setBrand(e.target.value)}
+                  required
+                />
+              </label>
+            </div>
 
-        <div className="row gy-3 mb-3">
-          <div className="col-12 col-sm-6">
-            <label className="form-label w-100">
-              Price:
-              <NumericFormat
-                placeholder="R$ 0,00"
-                prefix="R$ "
-                decimalScale={2}
-                fixedDecimalScale={true}
-                allowNegative={false}
-                thousandSeparator="."
-                decimalSeparator=","
-                className="form-control"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                required
-              />
-            </label>
-          </div>
-          <div className="col-12 col-sm-6">
-            <label className="form-label w-100">
-              Category:
-              <input
-                type="text"
-                placeholder="Eletronics"
-                className="form-control"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                required
-              />
-            </label>
-          </div>
-        </div>
+            <div className="row gy-3 mb-3">
+              <div className="col-12 col-sm-6">
+                <label className="form-label w-100">
+                  Price:
+                  <NumericFormat
+                    placeholder="R$ 0,00"
+                    prefix="R$ "
+                    decimalScale={2}
+                    fixedDecimalScale={true}
+                    allowNegative={false}
+                    thousandSeparator="."
+                    decimalSeparator=","
+                    className="form-control"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    required
+                  />
+                </label>
+              </div>
+              <div className="col-12 col-sm-6">
+                <label className="form-label w-100">
+                  Category:
+                  <input
+                    type="text"
+                    placeholder="Eletronics"
+                    className="form-control"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    required
+                  />
+                </label>
+              </div>
+            </div>
 
-        <div className="row gy-3 mb-3">
-          <div className="col-12 col-sm-6">
-            <label className="form-label w-100">
-              Product image:
-              <input className="form-control" type="file" />
-            </label>
-          </div>
-          <div className="col-12 col-sm-6">
-            <label className="form-label w-100">
-              Quantity:
-              <NumericFormat
-                placeholder="0"
-                allowNegative={false}
-                decimalScale={0}
-                className="form-control"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                required
-              />
-            </label>
-          </div>
-        </div>
+            <div className="row gy-3 mb-3">
+              <div className="col-12 col-sm-6">
+                <label className="form-label w-100">
+                  Product image:
+                  <input className="form-control" type="file" />
+                </label>
+              </div>
+              <div className="col-12 col-sm-6">
+                <label className="form-label w-100">
+                  Quantity:
+                  <NumericFormat
+                    placeholder="0"
+                    allowNegative={false}
+                    decimalScale={0}
+                    className="form-control"
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    required
+                  />
+                </label>
+              </div>
+            </div>
 
-        <div className="mb-3">
-          <label className="form-label w-100">
-            Description:
-            <textarea
-              placeholder="The product includes: 1 console, 2 controllers, and 1 accessory (Kinect)."
-              className="form-control"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </label>
-        </div>
+            <div className="mb-3">
+              <label className="form-label w-100">
+                Description:
+                <textarea
+                  placeholder="The product includes: 1 console, 2 controllers, and 1 accessory (Kinect)."
+                  className="form-control"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                />
+              </label>
+            </div>
 
-        <div className="d-flex justify-content-center align-items-center gap-4">
-          <motion.button
-            type="submit"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn-create btn btn-primary"
-          >
-            Update
-          </motion.button>
+            <div className="d-flex justify-content-center align-items-center gap-4">
+              <motion.button
+                type="submit"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-create btn btn-primary"
+              >
+                Update
+              </motion.button>
 
-          <motion.button
-            onClick={() => navigate("/")}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            type="button"
-            className="btn-cancel btn btn-danger"
-          >
-            Cancel
-          </motion.button>
-        </div>
+              <motion.button
+                onClick={() => navigate("/")}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                type="button"
+                className="btn-cancel btn btn-danger"
+              >
+                Cancel
+              </motion.button>
+            </div>
+          </>
+        )}
       </form>
     </div>
   );
