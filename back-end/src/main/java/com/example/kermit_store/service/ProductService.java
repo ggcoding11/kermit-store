@@ -8,7 +8,15 @@ import com.example.kermit_store.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductService {
@@ -30,12 +38,34 @@ public class ProductService {
         return toDto(product);
     }
 
-    public ProductResponseDTO criar (ProductCreateDTO dto) {
-        Product product = toEntity(dto);
+    public ProductResponseDTO criar (ProductCreateDTO dto, MultipartFile image) {
+        try {
+            Path folder = Paths.get("images");
 
-        Product saved = repository.save(product);
+            if (!Files.exists(folder)) {
+                Files.createDirectories(folder);
+            }
 
-        return toDto(saved);
+            String fileName =
+                    UUID.randomUUID() + "_" +
+                            image.getOriginalFilename();
+
+            Files.copy(
+                    image.getInputStream(),
+                    folder.resolve(fileName),
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+
+            Product product = toEntity(dto);
+            product.setImageName(fileName);
+
+            Product saved = repository.save(product);
+
+            return toDto(saved);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao salvar imagem");
+        }
     }
 
     public void deletar (Long id) {
@@ -69,7 +99,6 @@ public class ProductService {
         product.setCategory(dto.getCategory());
         product.setPrice(dto.getPrice());
         product.setCreationDate(dto.getCreationDate());
-        product.setImageName(dto.getImageName());
         product.setDescription(dto.getDescription());
 
         return product;

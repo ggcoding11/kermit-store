@@ -35,7 +35,18 @@ const Create = () => {
 
     console.log(product);
 
-    createProduct(product)
+    const formData = new FormData();
+
+    formData.append("name", name);
+    formData.append("brand", brand);
+    formData.append("price", price);
+    formData.append("category", category);
+    formData.append("image", image);
+    formData.append("creationDate", creationDate);
+    formData.append("quantity", Number(quantity));
+    formData.append("description", description);
+
+    createProduct(formData)
       .then(() => {
         alert("The new product was added to database!");
         navigate("/");
@@ -135,7 +146,6 @@ const Create = () => {
                 className="form-control"
                 type="file"
                 accept="image/*"
-                value={image}
                 onChange={(e) => {
                   setImage(e.target.files[0]);
                 }}

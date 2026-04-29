@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -38,9 +39,10 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(request);
     }
 
-    @PostMapping
-    public ResponseEntity<ProductResponseDTO> criar(@RequestBody @Valid ProductCreateDTO product) {
-        ProductResponseDTO request = service.criar(product);
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<ProductResponseDTO> criar( @ModelAttribute @Valid ProductCreateDTO product,
+                                                     @RequestParam MultipartFile image) {
+        ProductResponseDTO request = service.criar(product, image);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(request.getId()).toUri();
 
