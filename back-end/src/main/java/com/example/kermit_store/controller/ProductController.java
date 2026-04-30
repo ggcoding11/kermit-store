@@ -39,10 +39,9 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(request);
     }
 
-    @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<ProductResponseDTO> criar( @ModelAttribute @Valid ProductCreateDTO product,
-                                                     @RequestParam MultipartFile image) {
-        ProductResponseDTO request = service.criar(product, image);
+    @PostMapping
+    public ResponseEntity<ProductResponseDTO> criar(@ModelAttribute @Valid ProductCreateDTO product) {
+        ProductResponseDTO request = service.criar(product);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(request.getId()).toUri();
 

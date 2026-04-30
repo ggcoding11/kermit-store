@@ -22,19 +22,6 @@ const Create = () => {
   const handleCreate = (e) => {
     e.preventDefault();
 
-    const product = {
-      name,
-      brand,
-      price,
-      category,
-      image,
-      creationDate,
-      quantity,
-      description,
-    };
-
-    console.log(product);
-
     const formData = new FormData();
 
     formData.append("name", name);
@@ -43,17 +30,15 @@ const Create = () => {
     formData.append("category", category);
     formData.append("image", image);
     formData.append("creationDate", creationDate);
-    formData.append("quantity", Number(quantity));
+    formData.append("quantity", quantity);
     formData.append("description", description);
 
     createProduct(formData)
       .then(() => {
-        alert("The new product was added to database!");
+        alert("A new product was added to database!");
         navigate("/");
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -146,9 +131,8 @@ const Create = () => {
                 className="form-control"
                 type="file"
                 accept="image/*"
-                onChange={(e) => {
-                  setImage(e.target.files[0]);
-                }}
+                onChange={(e) => setImage(e.target.files[0])}
+                required
               />
             </label>
           </div>
@@ -161,7 +145,7 @@ const Create = () => {
                 decimalScale={0}
                 className="form-control"
                 value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
+                onValueChange={(values) => setQuantity(values.floatValue)}
                 required
               />
             </label>

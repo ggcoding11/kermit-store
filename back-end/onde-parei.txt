@@ -1,1 +1,1 @@
-- Parei na compreensão do novo código de listAll com Sort
+- Termine de entender toda a lógica do backend recebendo o formData (mais informações no caderno preto)

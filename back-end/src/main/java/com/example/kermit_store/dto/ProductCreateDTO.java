@@ -3,10 +3,13 @@ package com.example.kermit_store.dto;
 import com.example.kermit_store.enums.CategoryEnum;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
 @Getter
+@Setter
 public class ProductCreateDTO {
     @NotBlank(message = "Name is required")
     private String name;
@@ -20,8 +23,8 @@ public class ProductCreateDTO {
     @NotNull(message = "Category is required")
     private CategoryEnum category;
 
-    @NotBlank(message = "Image name is required")
-    private String imageName;
+    @NotNull(message = "Image is required")
+    private MultipartFile image;
 
     @NotNull(message = "Creation date is required")
     private LocalDate creationDate;

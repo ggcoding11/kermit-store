@@ -38,8 +38,10 @@ public class ProductService {
         return toDto(product);
     }
 
-    public ProductResponseDTO criar (ProductCreateDTO dto, MultipartFile image) {
+    public ProductResponseDTO criar (ProductCreateDTO dto) {
         try {
+            MultipartFile image = dto.getImage();
+
             Path folder = Paths.get("images");
 
             if (!Files.exists(folder)) {

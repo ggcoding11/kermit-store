@@ -3,6 +3,7 @@ package com.example.kermit_store.dto;
 import com.example.kermit_store.enums.CategoryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
