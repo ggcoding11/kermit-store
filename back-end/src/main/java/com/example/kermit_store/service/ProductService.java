@@ -58,14 +58,10 @@ public class ProductService {
                     StandardCopyOption.REPLACE_EXISTING
             );
 
-            Product product = toEntity(dto);
-            product.setImageName(fileName);
+            Product product = toEntity(dto, fileName);
 
-            Product saved = repository.save(product);
-
-            return toDto(saved);
-
-        } catch (IOException e) {
+            return toDto(repository.save(product));
+        } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar imagem");
         }
     }
@@ -92,7 +88,7 @@ public class ProductService {
         return new ProductResponseDTO(product.getId(), product.getName(), product.getBrand(), product.getPrice(), product.getCategory(), product.getImageName(), product.getCreationDate(), product.getQuantity(), product.getDescription());
     }
 
-    public Product toEntity(ProductCreateDTO dto) {
+    public Product toEntity(ProductCreateDTO dto, String imageName) {
         Product product = new Product();
 
         product.setName(dto.getName());
@@ -101,6 +97,7 @@ public class ProductService {
         product.setCategory(dto.getCategory());
         product.setPrice(dto.getPrice());
         product.setCreationDate(dto.getCreationDate());
+        product.setImageName(imageName);
         product.setDescription(dto.getDescription());
 
         return product;
