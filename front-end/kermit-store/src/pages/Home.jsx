@@ -125,7 +125,12 @@ const Home = () => {
                           <td>{product.name}</td>
                           <td>{product.brand}</td>
                           <td>{formatCategory(product.category)}</td>
-                          <td>{product.imageName}</td>
+                          <td>
+                            <img
+                              src={`http://localhost:8080/images/${product.imageName}`}
+                              alt={product.imageName}
+                            />
+                          </td>
                           <td>{product.creationDate}</td>
                           <td>
                             {new Intl.NumberFormat("pt-BR", {

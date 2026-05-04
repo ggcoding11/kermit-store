@@ -1,1 +1,1 @@
-- Termine de entender toda a lógica do backend recebendo o formData (mais informações no caderno preto)
+- Terminar de fazer a API pras imagens
