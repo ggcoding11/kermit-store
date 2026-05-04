@@ -133,26 +133,30 @@ const Home = () => {
                               currency: "BRL",
                             }).format(product.price)}
                           </td>
-                          <td className="d-flex gap-2">
-                            <motion.button
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              className="btn btn-primary"
-                              onClick={() => navigate(`/update/${product.id}`)}
-                            >
-                              Edit
-                            </motion.button>
-                            <motion.button
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              className="btn btn-danger"
-                              onClick={() => {
-                                onOpenModalDelete();
-                                setIdToDelete(product.id);
-                              }}
-                            >
-                              Delete
-                            </motion.button>
+                          <td>
+                            <div className="d-flex gap-2">
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="btn btn-primary"
+                                onClick={() =>
+                                  navigate(`/update/${product.id}`)
+                                }
+                              >
+                                Edit
+                              </motion.button>
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="btn btn-danger"
+                                onClick={() => {
+                                  onOpenModalDelete();
+                                  setIdToDelete(product.id);
+                                }}
+                              >
+                                Delete
+                              </motion.button>
+                            </div>
                           </td>
                         </tr>
                       ))}
