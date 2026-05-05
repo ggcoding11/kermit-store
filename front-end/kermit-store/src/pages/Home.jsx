@@ -127,7 +127,7 @@ const Home = () => {
                           <td>{formatCategory(product.category)}</td>
                           <td>
                             <img
-                              src={`http://localhost:8080/images/${product.imageName}`}
+                              src={`http://localhost:8080/products/images/${product.imageName}`}
                               alt={product.imageName}
                             />
                           </td>

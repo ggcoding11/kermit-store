@@ -1,1 +1,1 @@
-- Terminar de fazer a API pras imagens
+- Parei no entendimento da API de imagens

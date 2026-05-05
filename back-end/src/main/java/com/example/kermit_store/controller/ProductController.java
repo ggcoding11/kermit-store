@@ -6,13 +6,17 @@ import com.example.kermit_store.dto.ProductUpdateDTO;
 import com.example.kermit_store.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @CrossOrigin
@@ -37,6 +41,26 @@ public class ProductController {
         ProductResponseDTO request = service.listarPorId(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(request);
+    }
+
+    @GetMapping("/images/{fileName}")
+    public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
+        try {
+            Path path = Paths.get("images").resolve(fileName);
+
+            Resource resource = new UrlResource(path.toUri());
+
+            if (!resource.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok()
+                    .header("Content-Type", Files.probeContentType(path))
+                    .body(resource);
+
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
