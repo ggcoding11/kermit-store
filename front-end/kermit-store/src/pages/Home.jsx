@@ -126,10 +126,13 @@ const Home = () => {
                           <td>{product.brand}</td>
                           <td>{formatCategory(product.category)}</td>
                           <td>
-                            <img
-                              src={`http://localhost:8080/products/images/${product.imageName}`}
-                              alt={product.imageName}
-                            />
+                            <div>
+                              <img
+                                className="img-fluid"
+                                src={`http://localhost:8080/products/images/${product.imageName}`}
+                                alt={product.imageName}
+                              />
+                            </div>
                           </td>
                           <td>{product.creationDate}</td>
                           <td>
