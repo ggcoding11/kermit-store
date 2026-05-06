@@ -139,6 +139,17 @@ const Home = () => {
                               <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
+                                className="btn btn-success"
+                                onClick={() => {
+                                  navigate(`/products/${product.id}`);
+                                }}
+                              >
+                                <BsEyeFill />
+                              </motion.button>
+                              
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
                                 className="btn btn-primary"
                                 onClick={() =>
                                   navigate(`/update/${product.id}`)
@@ -146,6 +157,7 @@ const Home = () => {
                               >
                                 <BsPencilSquare />
                               </motion.button>
+
                               <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
@@ -156,17 +168,6 @@ const Home = () => {
                                 }}
                               >
                                 <BsFillTrashFill />
-                              </motion.button>
-
-                              <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="btn btn-success"
-                                onClick={() => {
-                                  navigate(`/products/${product.id}`);
-                                }}
-                              >
-                                <BsEyeFill />
                               </motion.button>
                             </div>
                           </td>
