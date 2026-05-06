@@ -4,6 +4,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "../pages/Home";
 import Create from "../pages/Create";
 import Update from "../pages/Update";
+import View from "../pages/View";
 import NotFound from "../pages/NotFound";
 
 const AnimatedRoutes = () => {
@@ -47,6 +48,19 @@ const AnimatedRoutes = () => {
                 exit={{ opacity: 0 }}
               >
                 <Update />
+              </motion.div>
+            }
+          />
+
+          <Route
+            path="/products/:id"
+            element={
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <View />
               </motion.div>
             }
           />

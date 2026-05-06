@@ -61,8 +61,8 @@ public class ProductService {
             Product product = toEntity(dto, fileName);
 
             return toDto(repository.save(product));
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar imagem");
+        } catch (IOException e) {
+            throw new RuntimeException("Erro no salvamento da imagem!");
         }
     }
 

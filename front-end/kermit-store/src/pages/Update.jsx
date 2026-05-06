@@ -70,6 +70,7 @@ const Update = () => {
                   className="form-control"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  maxLength={255}
                   required
                 />
               </label>
@@ -84,6 +85,7 @@ const Update = () => {
                   className="form-control"
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
+                  maxLength={255}
                   required
                 />
               </label>
@@ -154,6 +156,7 @@ const Update = () => {
                   className="form-control"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
+                  maxLength={255}
                   required
                 />
               </label>

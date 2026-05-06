@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { MdSort } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
+import { BsPencilSquare } from "react-icons/bs";
+import { BsFillTrashFill } from "react-icons/bs";
+import { BsEyeFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import "../css/Home.css";
 import { motion } from "framer-motion";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import { deleteProduct, getAllProducts } from "../services/ProductService";
 import Loading from "../components/Loading";
+import Header from "../components/Header";
+import "../css/Home.css";
 
 const Home = () => {
   const [products, setProducts] = useState(null);
@@ -111,7 +114,6 @@ const Home = () => {
                       <th scope="col">Name</th>
                       <th scope="col">Brand</th>
                       <th scope="col">Category</th>
-                      <th scope="col">Image</th>
                       <th scope="col">Created at</th>
                       <th scope="col">Price</th>
                       <th scope="col">Actions</th>
@@ -125,15 +127,6 @@ const Home = () => {
                           <td>{product.name}</td>
                           <td>{product.brand}</td>
                           <td>{formatCategory(product.category)}</td>
-                          <td>
-                            <div>
-                              <img
-                                className="img-fluid"
-                                src={`http://localhost:8080/products/images/${product.imageName}`}
-                                alt={product.imageName}
-                              />
-                            </div>
-                          </td>
                           <td>{product.creationDate}</td>
                           <td>
                             {new Intl.NumberFormat("pt-BR", {
@@ -151,7 +144,7 @@ const Home = () => {
                                   navigate(`/update/${product.id}`)
                                 }
                               >
-                                Edit
+                                <BsPencilSquare />
                               </motion.button>
                               <motion.button
                                 whileHover={{ scale: 1.05 }}
@@ -162,7 +155,18 @@ const Home = () => {
                                   setIdToDelete(product.id);
                                 }}
                               >
-                                Delete
+                                <BsFillTrashFill />
+                              </motion.button>
+
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="btn btn-success"
+                                onClick={() => {
+                                  navigate(`/products/${product.id}`);
+                                }}
+                              >
+                                <BsEyeFill />
                               </motion.button>
                             </div>
                           </td>
