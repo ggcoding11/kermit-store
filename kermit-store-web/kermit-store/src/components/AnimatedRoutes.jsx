@@ -4,8 +4,8 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "../pages/Home";
 import Create from "../pages/Create";
 import Update from "../pages/Update";
-import View from "../pages/View";
 import NotFound from "../pages/NotFound";
+import ProductView from "../pages/ProductView";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -60,7 +60,7 @@ const AnimatedRoutes = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <View />
+                <ProductView />
               </motion.div>
             }
           />
