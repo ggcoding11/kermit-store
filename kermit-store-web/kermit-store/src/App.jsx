@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import AnimatedRoutes from "./components/AnimatedRoutes";
+
 import "./App.css";
 
 const App = () => {

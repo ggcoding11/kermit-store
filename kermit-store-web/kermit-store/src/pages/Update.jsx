@@ -1,13 +1,16 @@
-import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { NumericFormat } from "react-number-format";
 import { useNavigate, useParams } from "react-router-dom";
+
 import { getProductById, updateProduct } from "../services/ProductService";
+
 import Loading from "../components/Loading";
 
 const Update = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [price, setPrice] = useState("");

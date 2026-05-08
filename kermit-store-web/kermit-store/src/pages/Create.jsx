@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
-import "../css/Create.css";
 import { motion } from "framer-motion";
+
 import { createProduct } from "../services/ProductService";
 
+import "../css/Create.css";
+
 const Create = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [price, setPrice] = useState("");
@@ -16,8 +20,6 @@ const Create = () => {
   );
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
-
-  const navigate = useNavigate();
 
   const handleCreate = (e) => {
     e.preventDefault();

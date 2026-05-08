@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Modal } from "react-responsive-modal";
+
 import { MdSort } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { BsPencilSquare } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
 import { BsEyeFill } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import "react-responsive-modal/styles.css";
-import { Modal } from "react-responsive-modal";
+
 import { deleteProduct, getAllProducts } from "../services/ProductService";
+
 import Loading from "../components/Loading";
 import Header from "../components/Header";
+
 import "../css/Home.css";
+import "react-responsive-modal/styles.css";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const [products, setProducts] = useState(null);
   const [params, setParams] = useState(null);
   const [reload, setReload] = useState(null);
@@ -28,12 +34,9 @@ const Home = () => {
       .catch((error) => console.log(error));
   }, [params, reload]);
 
-  const navigate = useNavigate();
-
   const [openDelete, setOpenDelete] = useState(false);
   const onOpenModalDelete = () => setOpenDelete(true);
   const onCloseModalDelete = () => setOpenDelete(false);
-
   const [openSort, setOpenSort] = useState(false);
   const onOpenModalSort = () => setOpenSort(true);
   const onCloseModalSort = () => setOpenSort(false);
@@ -146,7 +149,7 @@ const Home = () => {
                               >
                                 <BsEyeFill />
                               </motion.button>
-                              
+
                               <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
