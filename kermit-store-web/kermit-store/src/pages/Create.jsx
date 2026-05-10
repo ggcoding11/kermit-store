@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
 import { motion } from "framer-motion";
+import { Modal } from "react-responsive-modal";
 
 import { createProduct } from "../services/ProductService";
 
+import "react-responsive-modal/styles.css";
 import "../css/Create.css";
 
 const MAX_LENGTH_TEXT = 200;
@@ -39,10 +41,16 @@ const Create = () => {
 
     createProduct(formData)
       .then(() => {
-        alert("A new product was added to database!");
-        navigate("/");
+        onOpenModal();
       })
       .catch((error) => console.log(error));
+  };
+
+  const [openModal, setOpenModal] = useState(false);
+  const onOpenModal = () => setOpenModal(true);
+  const onCloseModal = () => {
+    setOpenModal(false);
+    navigate("/");
   };
 
   return (
@@ -193,6 +201,20 @@ const Create = () => {
           </motion.button>
         </div>
       </form>
+
+      <Modal
+        open={openModal}
+        onClose={onCloseModal}
+        center
+        showCloseIcon={false}
+        classNames={{
+          modal: "customModalCreated",
+        }}
+      >
+        <h1 className="text-center fs-3">The product was created!</h1>
+
+        <div className="text-center">New data was added to database</div>
+      </Modal>
     </div>
   );
 };
