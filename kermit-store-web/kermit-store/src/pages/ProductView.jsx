@@ -51,7 +51,7 @@ const ProductView = () => {
             <h3 className="text-secondary">{brand}</h3>
 
             <img
-              src={`http://localhost:8080/products/images/${imageName}`}
+              src={`http://localhost:8080/images/${imageName}`}
               className="img-fluid"
               alt={imageName}
             />
