@@ -7,10 +7,12 @@ import { getProductById, updateProduct } from "../services/ProductService";
 
 import Loading from "../components/Loading";
 
+const MAX_LENGTH_TEXT = 200;
+
 const Update = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  
+
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [price, setPrice] = useState("");
@@ -73,7 +75,7 @@ const Update = () => {
                   className="form-control"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  maxLength={255}
+                  maxLength={MAX_LENGTH_TEXT}
                   required
                 />
               </label>
@@ -88,7 +90,7 @@ const Update = () => {
                   className="form-control"
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
-                  maxLength={255}
+                  maxLength={MAX_LENGTH_TEXT}
                   required
                 />
               </label>
@@ -159,7 +161,7 @@ const Update = () => {
                   className="form-control"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  maxLength={255}
+                  maxLength={MAX_LENGTH_TEXT}
                   required
                 />
               </label>

@@ -7,6 +7,8 @@ import { createProduct } from "../services/ProductService";
 
 import "../css/Create.css";
 
+const MAX_LENGTH_TEXT = 200;
+
 const Create = () => {
   const navigate = useNavigate();
 
@@ -57,7 +59,7 @@ const Create = () => {
               className="form-control"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              maxLength={255}
+              maxLength={MAX_LENGTH_TEXT}
               required
             />
           </label>
@@ -72,7 +74,7 @@ const Create = () => {
               className="form-control"
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
-              maxLength={255}
+              maxLength={MAX_LENGTH_TEXT}
               required
             />
           </label>
@@ -164,7 +166,7 @@ const Create = () => {
               className="form-control"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              maxLength={255}
+              maxLength={MAX_LENGTH_TEXT}
               required
             />
           </label>

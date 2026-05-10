@@ -43,26 +43,6 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(request);
     }
 
-    @GetMapping("/images/{fileName}")
-    public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
-        try {
-            Path path = Paths.get("images").resolve(fileName);
-
-            Resource resource = new UrlResource(path.toUri());
-
-            if (!resource.exists()) {
-                return ResponseEntity.notFound().build();
-            }
-
-            return ResponseEntity.ok()
-                    .header("Content-Type", Files.probeContentType(path))
-                    .body(resource);
-
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @PostMapping
     public ResponseEntity<ProductResponseDTO> criar(@ModelAttribute @Valid ProductCreateDTO product) {
         ProductResponseDTO request = service.criar(product);

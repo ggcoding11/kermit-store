@@ -2,14 +2,12 @@ package com.example.kermit_store.service;
 import com.example.kermit_store.dto.ProductCreateDTO;
 import com.example.kermit_store.dto.ProductResponseDTO;
 import com.example.kermit_store.dto.ProductUpdateDTO;
-import com.example.kermit_store.exceptions.ResourceNotFoundException;
 import com.example.kermit_store.model.Product;
 import com.example.kermit_store.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,7 +31,7 @@ public class ProductService {
     }
 
     public ProductResponseDTO listarPorId(Long id) {
-        Product product = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        Product product = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
         return toDto(product);
     }
@@ -71,7 +69,7 @@ public class ProductService {
     }
 
     public ProductResponseDTO atualizar (Long id, ProductUpdateDTO novo) {
-        Product antigo = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        Product antigo = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
         antigo.setName(novo.getName());
         antigo.setBrand(novo.getBrand());
