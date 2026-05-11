@@ -1,4 +1,4 @@
-package com.example.kermit_store.model;
+package com.example.kermit_store.models;
 
 import com.example.kermit_store.enums.CategoryEnum;
 import jakarta.persistence.*;

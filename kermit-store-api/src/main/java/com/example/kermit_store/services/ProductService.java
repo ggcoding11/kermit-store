@@ -1,9 +1,9 @@
-package com.example.kermit_store.service;
-import com.example.kermit_store.dto.ProductCreateDTO;
-import com.example.kermit_store.dto.ProductResponseDTO;
-import com.example.kermit_store.dto.ProductUpdateDTO;
-import com.example.kermit_store.model.Product;
-import com.example.kermit_store.repository.ProductRepository;
+package com.example.kermit_store.services;
+import com.example.kermit_store.dtos.ProductCreateDTO;
+import com.example.kermit_store.dtos.ProductResponseDTO;
+import com.example.kermit_store.dtos.ProductUpdateDTO;
+import com.example.kermit_store.models.Product;
+import com.example.kermit_store.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
