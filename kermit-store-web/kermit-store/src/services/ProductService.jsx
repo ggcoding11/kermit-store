@@ -1,24 +1,24 @@
 import React from "react";
 import axios from "axios";
 
-const urlProducts = `http://localhost:8080/products`;
+const API_URL = `http://localhost:8080/products`;
 
 export const getAllProducts = (params) => {
-  return axios.get(urlProducts, { params });
+  return axios.get(API_URL, { params });
 };
 
 export const getProductById = (id) => {
-  return axios.get(urlProducts + "/" + id);
+  return axios.get(API_URL + "/" + id);
 };
 
 export const updateProduct = (id, product) => {
-  return axios.put(urlProducts + "/" + id, product);
+  return axios.put(API_URL + "/" + id, product);
 };
 
 export const createProduct = (formData) => {
-  return axios.post(urlProducts, formData);
+  return axios.post(API_URL, formData);
 };
 
 export const deleteProduct = (id) => {
-  return axios.delete(urlProducts + "/" + id);
+  return axios.delete(API_URL + "/" + id);
 };
