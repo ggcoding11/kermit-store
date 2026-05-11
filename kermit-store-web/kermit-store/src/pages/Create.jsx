@@ -25,8 +25,12 @@ const Create = () => {
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
 
+  const [blockSubmit, setBlockSubmit] = useState(false);
+
   const handleCreate = (e) => {
     e.preventDefault();
+
+    setBlockSubmit(true);
 
     const formData = new FormData();
 
@@ -183,6 +187,7 @@ const Create = () => {
         <div className="d-flex justify-content-center align-items-center gap-4">
           <motion.button
             type="submit"
+            disabled={blockSubmit}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="btn-create btn btn-primary"
