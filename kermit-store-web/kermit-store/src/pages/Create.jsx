@@ -218,7 +218,7 @@ const Create = () => {
       >
         <h1 className="text-center fs-3">The product was created!</h1>
 
-        <div className="text-center">New data was added to database</div>
+        <div className="text-center">New data was added to the database</div>
       </Modal>
     </div>
   );

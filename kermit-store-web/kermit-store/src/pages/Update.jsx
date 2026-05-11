@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { NumericFormat } from "react-number-format";
 import { useNavigate, useParams } from "react-router-dom";
+import { Modal } from "react-responsive-modal";
 
 import { getProductById, updateProduct } from "../services/ProductService";
 
 import Loading from "../components/Loading";
+
+import "react-responsive-modal/styles.css";
+import "../css/Update.css";
 
 const MAX_LENGTH_TEXT = 200;
 
@@ -52,9 +56,16 @@ const Update = () => {
 
     updateProduct(id, product)
       .then((response) => {
-        alert("The product was updated!");
+        onOpenModal();
       })
       .catch((error) => console.log(error));
+  };
+
+  const [openModal, setOpenModal] = useState(false);
+  const onOpenModal = () => setOpenModal(true);
+  const onCloseModal = () => {
+    setOpenModal(false);
+    navigate("/");
   };
 
   return (
@@ -190,6 +201,20 @@ const Update = () => {
           </>
         )}
       </form>
+
+      <Modal
+        open={openModal}
+        onClose={onCloseModal}
+        center
+        showCloseIcon={false}
+        classNames={{
+          modal: "customModalUpdated",
+        }}
+      >
+        <h1 className="text-center fs-3">The product was updated!</h1>
+
+        <div className="text-center">Product data was updated successfully</div>
+      </Modal>
     </div>
   );
 };

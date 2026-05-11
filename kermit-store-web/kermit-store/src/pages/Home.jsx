@@ -37,6 +37,7 @@ const Home = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const onOpenModalDelete = () => setOpenDelete(true);
   const onCloseModalDelete = () => setOpenDelete(false);
+  
   const [openSort, setOpenSort] = useState(false);
   const onOpenModalSort = () => setOpenSort(true);
   const onCloseModalSort = () => setOpenSort(false);
