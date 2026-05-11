@@ -1,4 +1,4 @@
-package com.example.kermit_store.controller;
+package com.example.kermit_store.controllers;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

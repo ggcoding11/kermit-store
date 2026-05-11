@@ -1,4 +1,4 @@
-package com.example.kermit_store.dto;
+package com.example.kermit_store.dtos;
 
 import com.example.kermit_store.enums.CategoryEnum;
 import jakarta.validation.constraints.*;

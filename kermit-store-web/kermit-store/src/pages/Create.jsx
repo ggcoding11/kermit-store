@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
 import { motion } from "framer-motion";
+import { Modal } from "react-responsive-modal";
 
 import { createProduct } from "../services/ProductService";
 
+import "react-responsive-modal/styles.css";
 import "../css/Create.css";
 
 const MAX_LENGTH_TEXT = 200;
@@ -23,8 +25,12 @@ const Create = () => {
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
 
+  const [blockSubmit, setBlockSubmit] = useState(false);
+
   const handleCreate = (e) => {
     e.preventDefault();
+
+    setBlockSubmit(true);
 
     const formData = new FormData();
 
@@ -39,10 +45,16 @@ const Create = () => {
 
     createProduct(formData)
       .then(() => {
-        alert("A new product was added to database!");
-        navigate("/");
+        onOpenModal();
       })
       .catch((error) => console.log(error));
+  };
+
+  const [openModal, setOpenModal] = useState(false);
+  const onOpenModal = () => setOpenModal(true);
+  const onCloseModal = () => {
+    setOpenModal(false);
+    navigate("/");
   };
 
   return (
@@ -175,6 +187,7 @@ const Create = () => {
         <div className="d-flex justify-content-center align-items-center gap-4">
           <motion.button
             type="submit"
+            disabled={blockSubmit}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="btn-create btn btn-primary"
@@ -193,6 +206,20 @@ const Create = () => {
           </motion.button>
         </div>
       </form>
+
+      <Modal
+        open={openModal}
+        onClose={onCloseModal}
+        center
+        showCloseIcon={false}
+        classNames={{
+          modal: "customModalCreated",
+        }}
+      >
+        <h1 className="text-center fs-3">The product was created!</h1>
+
+        <div className="text-center">New data was added to the database</div>
+      </Modal>
     </div>
   );
 };

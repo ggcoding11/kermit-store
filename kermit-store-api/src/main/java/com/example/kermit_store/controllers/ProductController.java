@@ -1,22 +1,17 @@
-package com.example.kermit_store.controller;
+package com.example.kermit_store.controllers;
 
-import com.example.kermit_store.dto.ProductCreateDTO;
-import com.example.kermit_store.dto.ProductResponseDTO;
-import com.example.kermit_store.dto.ProductUpdateDTO;
-import com.example.kermit_store.service.ProductService;
+import com.example.kermit_store.dtos.ProductCreateDTO;
+import com.example.kermit_store.dtos.ProductResponseDTO;
+import com.example.kermit_store.dtos.ProductUpdateDTO;
+import com.example.kermit_store.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @CrossOrigin
