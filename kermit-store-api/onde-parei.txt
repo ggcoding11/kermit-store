@@ -1,1 +1,1 @@
-- Parei no entendimento da API de imagens
+- Continuar a manutenção da operação de UPDATE

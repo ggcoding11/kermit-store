@@ -21,10 +21,15 @@ const Update = () => {
   const [brand, setBrand] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [imageName, setImageName] = useState("");
+  const [image, setImage] = useState(null);
+  const [creationDate, setCreationDate] = useState(
+    new Date().toISOString().split("T")[0],
+  );
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
+
   const [loading, setLoading] = useState(true);
+  const [blockSubmit, setBlockSubmit] = useState(false);
 
   useEffect(() => {
     getProductById(id)
@@ -33,7 +38,6 @@ const Update = () => {
         setBrand(product.data.brand);
         setPrice(product.data.price);
         setCategory(product.data.category);
-        setImageName(product.data.imageName);
         setQuantity(product.data.quantity);
         setDescription(product.data.description);
         setLoading(false);
@@ -44,17 +48,21 @@ const Update = () => {
   const handleUpdate = (e) => {
     e.preventDefault();
 
-    const product = {
-      name,
-      brand,
-      price,
-      category,
-      imageName,
-      quantity,
-      description,
-    };
+    setBlockSubmit(true);
 
-    updateProduct(id, product)
+    const formData = new FormData();
+
+    formData.append("name", name);
+    formData.append("brand", brand);
+    formData.append("price", price);
+    formData.append("category", category);
+    if (image) {
+      formData.append("image", image);
+    }
+    formData.append("quantity", quantity);
+    formData.append("description", description);
+
+    updateProduct(id, formData)
       .then((response) => {
         onOpenModal();
       })
@@ -121,7 +129,7 @@ const Update = () => {
                     decimalSeparator=","
                     className="form-control"
                     value={price}
-                    onChange={(e) => setPrice(e.target.value)}
+                    onValueChange={(values) => setPrice(values.floatValue)}
                     required
                   />
                 </label>
@@ -129,14 +137,29 @@ const Update = () => {
               <div className="col-12 col-sm-6">
                 <label className="form-label w-100">
                   Category:
-                  <input
-                    type="text"
-                    placeholder="Eletronics"
-                    className="form-control"
+                  <select
+                    className="form-select"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     required
-                  />
+                  >
+                    <option value="">Select the category</option>
+                    <option value="ELECTRONICS">Electronics</option>
+                    <option value="CLOTHING">Clothing</option>
+                    <option value="FOOD">Food</option>
+                    <option value="BEVERAGES">Beverages</option>
+                    <option value="BOOKS">Books</option>
+                    <option value="HOME_APPLIANCES">Home Appliances</option>
+                    <option value="FURNITURE">Furniture</option>
+                    <option value="BEAUTY">Beauty</option>
+                    <option value="HEALTH">Health</option>
+                    <option value="SPORTS">Sports</option>
+                    <option value="TOYS">Toys</option>
+                    <option value="AUTOMOTIVE">Automotive</option>
+                    <option value="OFFICE_SUPPLIES">Office Supplies</option>
+                    <option value="PET_SUPPLIES">Pet Supplies</option>
+                    <option value="OTHER">Other</option>
+                  </select>
                 </label>
               </div>
             </div>
@@ -145,7 +168,12 @@ const Update = () => {
               <div className="col-12 col-sm-6">
                 <label className="form-label w-100">
                   Product image:
-                  <input className="form-control" type="file" />
+                  <input
+                    className="form-control"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setImage(e.target.files[0])}
+                  />
                 </label>
               </div>
               <div className="col-12 col-sm-6">
@@ -157,7 +185,7 @@ const Update = () => {
                     decimalScale={0}
                     className="form-control"
                     value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
+                    onValueChange={(values) => setQuantity(values.floatValue)}
                     required
                   />
                 </label>
@@ -181,6 +209,7 @@ const Update = () => {
             <div className="d-flex justify-content-center align-items-center gap-4">
               <motion.button
                 type="submit"
+                disabled={blockSubmit}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-create btn btn-primary"

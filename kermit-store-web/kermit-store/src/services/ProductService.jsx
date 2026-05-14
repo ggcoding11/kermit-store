@@ -11,8 +11,8 @@ export const getProductById = (id) => {
   return axios.get(API_URL + "/" + id);
 };
 
-export const updateProduct = (id, product) => {
-  return axios.put(API_URL + "/" + id, product);
+export const updateProduct = (id, formData) => {
+  return axios.put(API_URL + "/" + id, formData);
 };
 
 export const createProduct = (formData) => {
