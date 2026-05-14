@@ -4,8 +4,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
 public class ProductUpdateDTO {
     @NotBlank(message = "Name is required")
     private String name;
@@ -19,8 +22,7 @@ public class ProductUpdateDTO {
     @NotNull(message = "Category is required")
     private CategoryEnum category;
 
-    @NotBlank(message = "Image name is required")
-    private String imageName;
+    private MultipartFile image;
 
     @NotNull(message = "Quantity is required")
     @PositiveOrZero(message = "Quantity cannot be less than 0")

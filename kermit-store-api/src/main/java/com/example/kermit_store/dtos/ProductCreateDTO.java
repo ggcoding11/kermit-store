@@ -23,7 +23,7 @@ public class ProductCreateDTO {
     @NotNull(message = "Category is required")
     private CategoryEnum category;
 
-    @NotNull(message = "Image is required")
+    @NotNull(message = "Image file is required")
     private MultipartFile image;
 
     @NotNull(message = "Creation date is required")

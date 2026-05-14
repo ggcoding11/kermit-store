@@ -37,31 +37,14 @@ public class ProductService {
     }
 
     public ProductResponseDTO criar (ProductCreateDTO dto) {
-        try {
-            MultipartFile image = dto.getImage();
+        MultipartFile imageFile = dto.getImage();
+        String imageName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
 
-            Path folder = Paths.get("images");
+        salvarImagem(imageFile, imageName);
 
-            if (!Files.exists(folder)) {
-                Files.createDirectories(folder);
-            }
+        Product product = toEntity(dto, imageFile.getOriginalFilename());
 
-            String fileName =
-                    UUID.randomUUID() + "_" +
-                            image.getOriginalFilename();
-
-            Files.copy(
-                    image.getInputStream(),
-                    folder.resolve(fileName),
-                    StandardCopyOption.REPLACE_EXISTING
-            );
-
-            Product product = toEntity(dto, fileName);
-
-            return toDto(repository.save(product));
-        } catch (IOException e) {
-            throw new RuntimeException("Erro no salvamento da imagem!");
-        }
+        return toDto(repository.save(product));
     }
 
     public void deletar (Long id) {
@@ -71,12 +54,25 @@ public class ProductService {
     public ProductResponseDTO atualizar (Long id, ProductUpdateDTO novo) {
         Product antigo = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
+        MultipartFile imageFile = novo.getImage();
+
+        String imageName = antigo.getImageName();
+
+        if (imageFile != null) {
+            imageName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+
+            String oldImageName = antigo.getImageName();
+
+            salvarImagem(imageFile, imageName);
+            deletarImagem(oldImageName);
+        }
+
         antigo.setName(novo.getName());
         antigo.setBrand(novo.getBrand());
-        antigo.setQuantity(novo.getQuantity());
-        antigo.setCategory(novo.getCategory());
         antigo.setPrice(novo.getPrice());
-        antigo.setImageName(novo.getImageName());
+        antigo.setImageName(imageName);
+        antigo.setCategory(novo.getCategory());
+        antigo.setQuantity(novo.getQuantity());
         antigo.setDescription(novo.getDescription());
 
         return toDto(repository.save(antigo));
@@ -99,5 +95,30 @@ public class ProductService {
         product.setDescription(dto.getDescription());
 
         return product;
+    }
+
+    public void salvarImagem(MultipartFile imageFile, String imageName) {
+        try {
+            MultipartFile image = imageFile;
+            Path folder = Paths.get("images");
+
+            if (!Files.exists(folder)) {
+                Files.createDirectories(folder);
+            }
+
+            Files.copy(image.getInputStream(), folder.resolve(imageName), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro no salvamento da imagem!");
+        }
+    }
+
+    public void deletarImagem(String imageName) {
+        try {
+            Path oldImage = Paths.get("images").resolve(imageName);
+
+            Files.deleteIfExists(oldImage);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro na remoção da imagem!");
+        }
     }
 }

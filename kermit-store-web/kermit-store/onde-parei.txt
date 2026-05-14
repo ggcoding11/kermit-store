@@ -1,2 +1,1 @@
-- Continuar a integração do backend (parei no POST)
-- Parei na implementação do post para imagens
+- Continuar a manutenção da operação de UPDATE
