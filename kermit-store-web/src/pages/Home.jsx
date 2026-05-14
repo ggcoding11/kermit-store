@@ -24,6 +24,7 @@ const Home = () => {
   const [params, setParams] = useState(null);
   const [reload, setReload] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [blockSubmit, setBlockSubmit] = useState(false);
 
   useEffect(() => {
     getAllProducts(params)
@@ -37,7 +38,7 @@ const Home = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const onOpenModalDelete = () => setOpenDelete(true);
   const onCloseModalDelete = () => setOpenDelete(false);
-  
+
   const [openSort, setOpenSort] = useState(false);
   const onOpenModalSort = () => setOpenSort(true);
   const onCloseModalSort = () => setOpenSort(false);
@@ -45,12 +46,15 @@ const Home = () => {
   const [idToDelete, setIdToDelete] = useState("");
 
   const handleDelete = () => {
+    setBlockSubmit(true);
+
     deleteProduct(idToDelete)
       .then((response) => {
         setReload(response);
         onCloseModalDelete();
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      .finally(() => setBlockSubmit(false));
   };
 
   const formatCategory = (category) => {
@@ -234,7 +238,11 @@ const Home = () => {
           </h1>
 
           <div className="d-flex justify-content-evenly">
-            <button className="btn btn-danger" onClick={() => handleDelete()}>
+            <button
+              className="btn btn-danger"
+              onClick={() => handleDelete()}
+              disabled={blockSubmit}
+            >
               Deletar
             </button>
             <button
