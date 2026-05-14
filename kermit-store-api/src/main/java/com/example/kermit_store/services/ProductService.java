@@ -21,11 +21,17 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
-    public List<ProductResponseDTO> listarTodos(String field, String direction) {
+    public List<ProductResponseDTO> buscar(String search, String field, String direction) {
+        List<Product> products;
+
         Sort sort = direction.equalsIgnoreCase("desc")
                 ? Sort.by(field).descending() : Sort.by(field).ascending();
 
-        List<Product> products = repository.findAll(sort);
+        if (search == null || search.isBlank()) {
+            products = repository.findAll(sort);
+        } else {
+            products = repository.findByNameContainingIgnoreCase(search, sort);
+        }
 
         return products.stream().map(product -> toDto(product)).toList();
     }

@@ -22,11 +22,12 @@ public class ProductController {
     private ProductService service;
 
     @GetMapping
-    public ResponseEntity<List<ProductResponseDTO>> listarTodos(
-      @RequestParam(defaultValue = "id") String field,
-      @RequestParam(defaultValue = "asc") String direction
+    public ResponseEntity<List<ProductResponseDTO>> buscar(
+            @RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "id") String field,
+            @RequestParam(defaultValue = "asc") String direction
     ) {
-        List<ProductResponseDTO> request = service.listarTodos(field, direction);
+        List<ProductResponseDTO> request = service.buscar(search, field, direction);
 
         return ResponseEntity.status(HttpStatus.OK).body(request);
     }
