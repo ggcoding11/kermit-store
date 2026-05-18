@@ -21,10 +21,10 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
-    public List<ProductResponseDTO> buscar(String search, String field, String direction) {
+    public List<ProductResponseDTO> listar(String search, String field, String direction) {
         List<Product> products;
 
-        Sort sort = direction.equalsIgnoreCase("desc")
+        Sort sort = direction.equals("desc")
                 ? Sort.by(field).descending() : Sort.by(field).ascending();
 
         if (search == null || search.isBlank()) {
