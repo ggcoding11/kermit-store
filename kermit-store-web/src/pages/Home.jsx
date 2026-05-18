@@ -5,7 +5,7 @@ import { Modal } from "react-responsive-modal";
 
 import { MdSort } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
-import { BsPencilSquare } from "react-icons/bs";
+import { BsArrowDownUp, BsPencilSquare } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
 import { BsEyeFill } from "react-icons/bs";
 
@@ -116,13 +116,45 @@ const Home = () => {
                 <table className="table table-hover">
                   <thead>
                     <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Brand</th>
-                      <th scope="col">Category</th>
-                      <th scope="col">Created at</th>
-                      <th scope="col">Price</th>
-                      <th scope="col">Actions</th>
+                      <th scope="col">
+                        <div className="d-flex align-items-center gap-2">
+                          <span>#</span>
+                          <BsArrowDownUp />
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div className="d-flex align-items-center gap-2">
+                          <span>Name</span>
+                          <BsArrowDownUp />
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div className="d-flex align-items-center gap-2">
+                          <span>Brand</span>
+                          <BsArrowDownUp />
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div className="d-flex align-items-center gap-2">
+                          <span>Category</span>
+                          <BsArrowDownUp />
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div className="d-flex align-items-center gap-2">
+                          <span>Created at</span>
+                          <BsArrowDownUp />
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div className="d-flex align-items-center gap-2">
+                          <span>Price</span>
+                          <BsArrowDownUp />
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <span>Actions</span>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
