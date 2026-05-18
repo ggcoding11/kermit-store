@@ -9,7 +9,7 @@ import { BsPencilSquare } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
 import { BsEyeFill } from "react-icons/bs";
 
-import { deleteProduct, getAllProducts } from "../services/ProductService";
+import { getProducts, deleteProduct } from "../services/ProductService";
 
 import Loading from "../components/Loading";
 import Header from "../components/Header";
@@ -21,23 +21,28 @@ const Home = () => {
   const navigate = useNavigate();
 
   const [products, setProducts] = useState(null);
-  const [params, setParams] = useState(null);
+
+  const [search, setSearch] = useState("");
+  const [field, setField] = useState("");
+  const [direction, setDirection] = useState("");
+
   const [reload, setReload] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [blockSubmit, setBlockSubmit] = useState(false);
 
   useEffect(() => {
-    getAllProducts(params)
+    getProducts({ search, field, direction })
       .then((products) => {
         setProducts(products.data);
         setLoading(false);
       })
       .catch((error) => console.log(error));
-  }, [params, reload]);
+  }, [search, field, direction, reload]);
 
   const [openDelete, setOpenDelete] = useState(false);
   const onOpenModalDelete = () => setOpenDelete(true);
   const onCloseModalDelete = () => setOpenDelete(false);
-  
+
   const [openSort, setOpenSort] = useState(false);
   const onOpenModalSort = () => setOpenSort(true);
   const onCloseModalSort = () => setOpenSort(false);
@@ -45,12 +50,15 @@ const Home = () => {
   const [idToDelete, setIdToDelete] = useState("");
 
   const handleDelete = () => {
+    setBlockSubmit(true);
+
     deleteProduct(idToDelete)
       .then((response) => {
         setReload(response);
         onCloseModalDelete();
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      .finally(() => setBlockSubmit(false));
   };
 
   const formatCategory = (category) => {
@@ -92,15 +100,9 @@ const Home = () => {
                 type="text"
                 className="form-control"
                 placeholder="Search here!"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
-              <span
-                role="button"
-                className="input-group-text"
-                title="Search the product"
-                onClick={() => alert("Olá")}
-              >
-                <CiSearch />
-              </span>
             </div>
           </div>
         </div>
@@ -234,7 +236,11 @@ const Home = () => {
           </h1>
 
           <div className="d-flex justify-content-evenly">
-            <button className="btn btn-danger" onClick={() => handleDelete()}>
+            <button
+              className="btn btn-danger"
+              onClick={() => handleDelete()}
+              disabled={blockSubmit}
+            >
               Deletar
             </button>
             <button
@@ -267,7 +273,8 @@ const Home = () => {
                 whileTap={{ scale: 0.95 }}
                 className="btn btn-primary"
                 onClick={() => {
-                  setParams({ field: "id", direction: "asc" });
+                  setField("id");
+                  setDirection("asc");
                   onCloseModalSort();
                 }}
               >
@@ -278,7 +285,8 @@ const Home = () => {
                 whileTap={{ scale: 0.95 }}
                 className="btn btn-danger"
                 onClick={() => {
-                  setParams({ field: "id", direction: "desc" });
+                  setField("id");
+                  setDirection("desc");
                   onCloseModalSort();
                 }}
               >
@@ -296,7 +304,8 @@ const Home = () => {
                 whileTap={{ scale: 0.95 }}
                 className="btn btn-primary"
                 onClick={() => {
-                  setParams({ field: "name", direction: "asc" });
+                  setField("name");
+                  setDirection("asc");
                   onCloseModalSort();
                 }}
               >
@@ -307,7 +316,8 @@ const Home = () => {
                 whileTap={{ scale: 0.95 }}
                 className="btn btn-danger"
                 onClick={() => {
-                  setParams({ field: "name", direction: "desc" });
+                  setField("name");
+                  setDirection("desc");
                   onCloseModalSort();
                 }}
               >
@@ -325,7 +335,8 @@ const Home = () => {
                 whileTap={{ scale: 0.95 }}
                 className="btn btn-primary"
                 onClick={() => {
-                  setParams({ field: "price", direction: "asc" });
+                  setField("price");
+                  setDirection("asc");
                   onCloseModalSort();
                 }}
               >
@@ -336,7 +347,8 @@ const Home = () => {
                 whileTap={{ scale: 0.95 }}
                 className="btn btn-danger"
                 onClick={() => {
-                  setParams({ field: "price", direction: "desc" });
+                  setField("price");
+                  setDirection("desc");
                   onCloseModalSort();
                 }}
               >

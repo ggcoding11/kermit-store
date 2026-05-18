@@ -66,7 +66,8 @@ const Update = () => {
       .then((response) => {
         onOpenModal();
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      .finally(() => setBlockSubmit(false));
   };
 
   const [openModal, setOpenModal] = useState(false);
