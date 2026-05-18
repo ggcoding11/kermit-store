@@ -116,7 +116,7 @@ const Home = () => {
                 <table className="table table-hover">
                   <thead>
                     <tr>
-                      <th scope="col">ID</th>
+                      <th scope="col">#</th>
                       <th scope="col">Name</th>
                       <th scope="col">Brand</th>
                       <th scope="col">Category</th>
