@@ -22,7 +22,6 @@ import Header from "../components/Header";
 
 import "../css/Home.css";
 import "react-responsive-modal/styles.css";
-import { s } from "framer-motion/client";
 
 const Home = () => {
   const navigate = useNavigate();

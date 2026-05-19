@@ -40,7 +40,7 @@ const ProductView = () => {
         <Loading />
       ) : (
         <>
-          <div className="row d-flex gap-2">
+          <div className="row d-flex gap-2 mt-4">
             <h1>{name}</h1>
             <h3 className="text-secondary">{brand}</h3>
 
