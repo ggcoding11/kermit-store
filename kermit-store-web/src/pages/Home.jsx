@@ -66,8 +66,8 @@ const Home = () => {
   };
 
   const SortButton = (props) => {
-    const sortByField = (fieldName) => {
-      setField(fieldName);
+    const sortByField = (field) => {
+      setField(field);
 
       direction === "desc" ? setDirection("asc") : setDirection("desc");
     };
