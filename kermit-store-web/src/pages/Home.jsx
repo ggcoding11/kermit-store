@@ -65,10 +65,22 @@ const Home = () => {
       .finally(() => setBlockSubmit(false));
   };
 
-  const sortField = (field) => {
-    setField(field);
+  const SortButton = (props) => {
+    const sortByField = (fieldName) => {
+      setField(fieldName);
 
-    direction === "desc" ? setDirection("asc") : setDirection("desc");
+      direction === "desc" ? setDirection("asc") : setDirection("desc");
+    };
+
+    return field === props.field ? (
+      direction === "asc" ? (
+        <BsSortUp role="button" onClick={() => sortByField(props.field)} />
+      ) : (
+        <BsSortDown role="button" onClick={() => sortByField(props.field)} />
+      )
+    ) : (
+      <BsArrowDownUp role="button" onClick={() => sortByField(props.field)} />
+    );
   };
 
   return (
@@ -112,139 +124,37 @@ const Home = () => {
                       <th scope="col">
                         <div className="d-flex align-items-center gap-2">
                           <span>#</span>
-                          {field === "id" ? (
-                            direction === "asc" ? (
-                              <BsSortUp
-                                role="button"
-                                onClick={() => sortField("id")}
-                              />
-                            ) : (
-                              <BsSortDown
-                                role="button"
-                                onClick={() => sortField("id")}
-                              />
-                            )
-                          ) : (
-                            <BsArrowDownUp
-                              role="button"
-                              onClick={() => sortField("id")}
-                            />
-                          )}
+                          <SortButton field="id" />
                         </div>
                       </th>
                       <th scope="col">
                         <div className="d-flex align-items-center gap-2">
                           <span>Name</span>
-                          {field === "name" ? (
-                            direction === "asc" ? (
-                              <BsSortUp
-                                role="button"
-                                onClick={() => sortField("name")}
-                              />
-                            ) : (
-                              <BsSortDown
-                                role="button"
-                                onClick={() => sortField("name")}
-                              />
-                            )
-                          ) : (
-                            <BsArrowDownUp
-                              role="button"
-                              onClick={() => sortField("name")}
-                            />
-                          )}
+                          <SortButton field="name" />
                         </div>
                       </th>
                       <th scope="col">
                         <div className="d-flex align-items-center gap-2">
                           <span>Brand</span>
-                          {field === "brand" ? (
-                            direction === "asc" ? (
-                              <BsSortUp
-                                role="button"
-                                onClick={() => sortField("brand")}
-                              />
-                            ) : (
-                              <BsSortDown
-                                role="button"
-                                onClick={() => sortField("brand")}
-                              />
-                            )
-                          ) : (
-                            <BsArrowDownUp
-                              role="button"
-                              onClick={() => sortField("brand")}
-                            />
-                          )}
+                          <SortButton field="brand" />
                         </div>
                       </th>
                       <th scope="col">
                         <div className="d-flex align-items-center gap-2">
                           <span>Category</span>
-                          {field === "category" ? (
-                            direction === "asc" ? (
-                              <BsSortUp
-                                role="button"
-                                onClick={() => sortField("category")}
-                              />
-                            ) : (
-                              <BsSortDown
-                                role="button"
-                                onClick={() => sortField("category")}
-                              />
-                            )
-                          ) : (
-                            <BsArrowDownUp
-                              role="button"
-                              onClick={() => sortField("category")}
-                            />
-                          )}
+                          <SortButton field="category" />
                         </div>
                       </th>
                       <th scope="col">
                         <div className="d-flex align-items-center gap-2">
                           <span>Created at</span>
-                          {field === "creationDate" ? (
-                            direction === "asc" ? (
-                              <BsSortUp
-                                role="button"
-                                onClick={() => sortField("creationDate")}
-                              />
-                            ) : (
-                              <BsSortDown
-                                role="button"
-                                onClick={() => sortField("creationDate")}
-                              />
-                            )
-                          ) : (
-                            <BsArrowDownUp
-                              role="button"
-                              onClick={() => sortField("creationDate")}
-                            />
-                          )}
+                          <SortButton field="creationDate" />
                         </div>
                       </th>
                       <th scope="col">
                         <div className="d-flex align-items-center gap-2">
                           <span>Price</span>
-                          {field === "price" ? (
-                            direction === "asc" ? (
-                              <BsSortUp
-                                role="button"
-                                onClick={() => sortField("price")}
-                              />
-                            ) : (
-                              <BsSortDown
-                                role="button"
-                                onClick={() => sortField("price")}
-                              />
-                            )
-                          ) : (
-                            <BsArrowDownUp
-                              role="button"
-                              onClick={() => sortField("price")}
-                            />
-                          )}
+                          <SortButton field="price" />
                         </div>
                       </th>
                       <th scope="col">
