@@ -10,6 +10,7 @@ import { BsFillTrashFill } from "react-icons/bs";
 import { BsEyeFill } from "react-icons/bs";
 
 import { getProducts, deleteProduct } from "../services/ProductService";
+import { formatCategory } from "../utils/FormatCategory";
 
 import Loading from "../components/Loading";
 import Header from "../components/Header";
@@ -65,13 +66,6 @@ const Home = () => {
     setField(field);
 
     direction === "desc" ? setDirection("asc") : setDirection("desc");
-  };
-
-  const formatCategory = (category) => {
-    return category
-      .toLowerCase()
-      .replaceAll("_", " ")
-      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   };
 
   return (

@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 
 import { getProductById } from "../services/ProductService";
+import { formatCategory } from "../utils/FormatCategory";
 
 const ProductView = () => {
   const { id } = useParams();
@@ -32,13 +33,6 @@ const ProductView = () => {
       })
       .catch((error) => console.log(error));
   }, [id]);
-
-  const formatCategory = (category) => {
-    return category
-      .toLowerCase()
-      .replaceAll("_", " ")
-      .replace(/\b\w/g, (letra) => letra.toUpperCase());
-  };
 
   return (
     <div className="container min-vh-100 d-flex flex-column p-2">
