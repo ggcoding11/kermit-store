@@ -5,7 +5,12 @@ import { Modal } from "react-responsive-modal";
 
 import { MdSort } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
-import { BsArrowDownUp, BsPencilSquare } from "react-icons/bs";
+import {
+  BsArrowDownUp,
+  BsPencilSquare,
+  BsSortDown,
+  BsSortUp,
+} from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
 import { BsEyeFill } from "react-icons/bs";
 
@@ -44,10 +49,6 @@ const Home = () => {
   const onOpenModalDelete = () => setOpenDelete(true);
   const onCloseModalDelete = () => setOpenDelete(false);
 
-  const [openSort, setOpenSort] = useState(false);
-  const onOpenModalSort = () => setOpenSort(true);
-  const onCloseModalSort = () => setOpenSort(false);
-
   const [idToDelete, setIdToDelete] = useState("");
 
   const handleDelete = () => {
@@ -83,16 +84,6 @@ const Home = () => {
             >
               New product
             </motion.button>
-            <motion.button
-              type="button"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="btn btn-secondary"
-              title="Sort products"
-              onClick={() => onOpenModalSort()}
-            >
-              <MdSort />
-            </motion.button>
           </div>
           <div className="col-12 col-sm-5 d-flex justify-content-end">
             <div className="search-bar input-group">
@@ -119,55 +110,139 @@ const Home = () => {
                       <th scope="col">
                         <div className="d-flex align-items-center gap-2">
                           <span>#</span>
-                          <BsArrowDownUp
-                            role="button"
-                            onClick={() => sortField("id")}
-                          />
+                          {field === "id" ? (
+                            direction === "asc" ? (
+                              <BsSortUp
+                                role="button"
+                                onClick={() => sortField("id")}
+                              />
+                            ) : (
+                              <BsSortDown
+                                role="button"
+                                onClick={() => sortField("id")}
+                              />
+                            )
+                          ) : (
+                            <BsArrowDownUp
+                              role="button"
+                              onClick={() => sortField("id")}
+                            />
+                          )}
                         </div>
                       </th>
                       <th scope="col">
                         <div className="d-flex align-items-center gap-2">
                           <span>Name</span>
-                          <BsArrowDownUp
-                            role="button"
-                            onClick={() => sortField("name")}
-                          />
+                          {field === "name" ? (
+                            direction === "asc" ? (
+                              <BsSortUp
+                                role="button"
+                                onClick={() => sortField("name")}
+                              />
+                            ) : (
+                              <BsSortDown
+                                role="button"
+                                onClick={() => sortField("name")}
+                              />
+                            )
+                          ) : (
+                            <BsArrowDownUp
+                              role="button"
+                              onClick={() => sortField("name")}
+                            />
+                          )}
                         </div>
                       </th>
                       <th scope="col">
                         <div className="d-flex align-items-center gap-2">
                           <span>Brand</span>
-                          <BsArrowDownUp
-                            role="button"
-                            onClick={() => sortField("brand")}
-                          />
+                          {field === "brand" ? (
+                            direction === "asc" ? (
+                              <BsSortUp
+                                role="button"
+                                onClick={() => sortField("brand")}
+                              />
+                            ) : (
+                              <BsSortDown
+                                role="button"
+                                onClick={() => sortField("brand")}
+                              />
+                            )
+                          ) : (
+                            <BsArrowDownUp
+                              role="button"
+                              onClick={() => sortField("brand")}
+                            />
+                          )}
                         </div>
                       </th>
                       <th scope="col">
                         <div className="d-flex align-items-center gap-2">
                           <span>Category</span>
-                          <BsArrowDownUp
-                            role="button"
-                            onClick={() => sortField("category")}
-                          />
+                          {field === "category" ? (
+                            direction === "asc" ? (
+                              <BsSortUp
+                                role="button"
+                                onClick={() => sortField("category")}
+                              />
+                            ) : (
+                              <BsSortDown
+                                role="button"
+                                onClick={() => sortField("category")}
+                              />
+                            )
+                          ) : (
+                            <BsArrowDownUp
+                              role="button"
+                              onClick={() => sortField("category")}
+                            />
+                          )}
                         </div>
                       </th>
                       <th scope="col">
                         <div className="d-flex align-items-center gap-2">
                           <span>Created at</span>
-                          <BsArrowDownUp
-                            role="button"
-                            onClick={() => sortField("creationDate")}
-                          />
+                          {field === "creationDate" ? (
+                            direction === "asc" ? (
+                              <BsSortUp
+                                role="button"
+                                onClick={() => sortField("creationDate")}
+                              />
+                            ) : (
+                              <BsSortDown
+                                role="button"
+                                onClick={() => sortField("creationDate")}
+                              />
+                            )
+                          ) : (
+                            <BsArrowDownUp
+                              role="button"
+                              onClick={() => sortField("creationDate")}
+                            />
+                          )}
                         </div>
                       </th>
                       <th scope="col">
                         <div className="d-flex align-items-center gap-2">
                           <span>Price</span>
-                          <BsArrowDownUp
-                            role="button"
-                            onClick={() => sortField("price")}
-                          />
+                          {field === "price" ? (
+                            direction === "asc" ? (
+                              <BsSortUp
+                                role="button"
+                                onClick={() => sortField("price")}
+                              />
+                            ) : (
+                              <BsSortDown
+                                role="button"
+                                onClick={() => sortField("price")}
+                              />
+                            )
+                          ) : (
+                            <BsArrowDownUp
+                              role="button"
+                              onClick={() => sortField("price")}
+                            />
+                          )}
                         </div>
                       </th>
                       <th scope="col">
@@ -299,112 +374,6 @@ const Home = () => {
             >
               Fechar
             </button>
-          </div>
-        </div>
-      </Modal>
-
-      <Modal
-        open={openSort}
-        onClose={onCloseModalSort}
-        center
-        classNames={{
-          modal: "customModalSort",
-        }}
-      >
-        <div className="d-flex flex-column gap-2">
-          <h1 className="text-center fs-3">Sort products</h1>
-
-          <div>
-            <h3 className="fs-4">By product id:</h3>
-
-            <div className="d-flex gap-2">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn btn-primary"
-                onClick={() => {
-                  setField("id");
-                  setDirection("asc");
-                  onCloseModalSort();
-                }}
-              >
-                Ascending
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn btn-danger"
-                onClick={() => {
-                  setField("id");
-                  setDirection("desc");
-                  onCloseModalSort();
-                }}
-              >
-                Descending
-              </motion.button>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="fs-4">By product name:</h3>
-
-            <div className="d-flex gap-2">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn btn-primary"
-                onClick={() => {
-                  setField("name");
-                  setDirection("asc");
-                  onCloseModalSort();
-                }}
-              >
-                A-Z
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn btn-danger"
-                onClick={() => {
-                  setField("name");
-                  setDirection("desc");
-                  onCloseModalSort();
-                }}
-              >
-                Z-A
-              </motion.button>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="fs-4">By price:</h3>
-
-            <div className="d-flex gap-2">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn btn-primary"
-                onClick={() => {
-                  setField("price");
-                  setDirection("asc");
-                  onCloseModalSort();
-                }}
-              >
-                Ascending
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn btn-danger"
-                onClick={() => {
-                  setField("price");
-                  setDirection("desc");
-                  onCloseModalSort();
-                }}
-              >
-                Descending
-              </motion.button>
-            </div>
           </div>
         </div>
       </Modal>
