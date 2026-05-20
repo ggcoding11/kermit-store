@@ -23,7 +23,9 @@ public class ImageController {
                 return ResponseEntity.notFound().build();
             }
 
-            return ResponseEntity.ok().header("Content-Type", Files.probeContentType(path)).body(resource);
+            return ResponseEntity.ok().header(
+                    "Content-Type", Files.probeContentType(path)
+            ).body(resource);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }

@@ -1,1 +1,1 @@
-- Continuar a manutenção da operação de UPDATE
+- Continuar a implementação da paginação

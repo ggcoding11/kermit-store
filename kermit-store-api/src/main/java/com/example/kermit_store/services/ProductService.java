@@ -1,19 +1,23 @@
 package com.example.kermit_store.services;
+
 import com.example.kermit_store.dtos.ProductCreateDTO;
 import com.example.kermit_store.dtos.ProductResponseDTO;
 import com.example.kermit_store.dtos.ProductUpdateDTO;
 import com.example.kermit_store.models.Product;
 import com.example.kermit_store.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,28 +25,33 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
-    public List<ProductResponseDTO> listar(String search, String field, String direction) {
-        List<Product> products;
+    public Page<ProductResponseDTO> listar(
+            String search, int page, int size, String field, String direction
+    ) {
+        Sort sort = direction.equals("desc") ? Sort.by(field).descending() : Sort.by(field).ascending();
 
-        Sort sort = direction.equals("desc")
-                ? Sort.by(field).descending() : Sort.by(field).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Product> products;
 
         if (search == null || search.isBlank()) {
-            products = repository.findAll(sort);
+            products = repository.findAll(pageable);
         } else {
-            products = repository.findByNameContainingIgnoreCase(search, sort);
+            products = repository.findByNameContainingIgnoreCase(search, pageable);
         }
 
-        return products.stream().map(product -> toDto(product)).toList();
+        return products.map(this::toDto);
     }
 
     public ProductResponseDTO listarPorId(Long id) {
-        Product product = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        Product product = repository.findById(id).orElseThrow(
+                () -> new RuntimeException("Product not found")
+        );
 
         return toDto(product);
     }
 
-    public ProductResponseDTO criar (ProductCreateDTO dto) {
+    public ProductResponseDTO criar(ProductCreateDTO dto) {
         MultipartFile imageFile = dto.getImage();
         String imageName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
 
@@ -53,12 +62,14 @@ public class ProductService {
         return toDto(repository.save(product));
     }
 
-    public void deletar (Long id) {
+    public void deletar(Long id) {
         repository.deleteById(id);
     }
 
-    public ProductResponseDTO atualizar (Long id, ProductUpdateDTO novo) {
-        Product antigo = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    public ProductResponseDTO atualizar(Long id, ProductUpdateDTO novo) {
+        Product antigo = repository.findById(id).orElseThrow(
+                () -> new RuntimeException("Product not found")
+        );
 
         MultipartFile imageFile = novo.getImage();
 
@@ -85,7 +96,11 @@ public class ProductService {
     }
 
     public ProductResponseDTO toDto(Product product) {
-        return new ProductResponseDTO(product.getId(), product.getName(), product.getBrand(), product.getPrice(), product.getCategory(), product.getImageName(), product.getCreationDate(), product.getQuantity(), product.getDescription());
+        return new ProductResponseDTO(
+                product.getId(), product.getName(), product.getBrand(), product.getPrice(),
+                product.getCategory(), product.getImageName(), product.getCreationDate(),
+                product.getQuantity(), product.getDescription()
+        );
     }
 
     public Product toEntity(ProductCreateDTO dto, String imageName) {
@@ -112,7 +127,10 @@ public class ProductService {
                 Files.createDirectories(folder);
             }
 
-            Files.copy(image.getInputStream(), folder.resolve(imageName), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(
+                    image.getInputStream(), folder.resolve(imageName),
+                    StandardCopyOption.REPLACE_EXISTING
+            );
         } catch (IOException e) {
             throw new RuntimeException("Erro no salvamento da imagem!");
         }
