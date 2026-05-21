@@ -3,7 +3,7 @@ package com.example.kermit_store.services;
 import com.example.kermit_store.dtos.ProductCreateDTO;
 import com.example.kermit_store.dtos.ProductResponseDTO;
 import com.example.kermit_store.dtos.ProductUpdateDTO;
-import com.example.kermit_store.models.Product;
+import com.example.kermit_store.models.ProductModel;
 import com.example.kermit_store.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,7 +32,7 @@ public class ProductService {
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<Product> products;
+        Page<ProductModel> products;
 
         if (search == null || search.isBlank()) {
             products = repository.findAll(pageable);
@@ -44,7 +44,7 @@ public class ProductService {
     }
 
     public ProductResponseDTO listarPorId(Long id) {
-        Product product = repository.findById(id).orElseThrow(
+        ProductModel product = repository.findById(id).orElseThrow(
                 () -> new RuntimeException("Product not found")
         );
 
@@ -57,7 +57,7 @@ public class ProductService {
 
         salvarImagem(imageFile, imageName);
 
-        Product product = toEntity(dto, imageFile.getOriginalFilename());
+        ProductModel product = toEntity(dto, imageFile.getOriginalFilename());
 
         return toDto(repository.save(product));
     }
@@ -67,7 +67,7 @@ public class ProductService {
     }
 
     public ProductResponseDTO atualizar(Long id, ProductUpdateDTO novo) {
-        Product antigo = repository.findById(id).orElseThrow(
+        ProductModel antigo = repository.findById(id).orElseThrow(
                 () -> new RuntimeException("Product not found")
         );
 
@@ -95,7 +95,7 @@ public class ProductService {
         return toDto(repository.save(antigo));
     }
 
-    public ProductResponseDTO toDto(Product product) {
+    public ProductResponseDTO toDto(ProductModel product) {
         return new ProductResponseDTO(
                 product.getId(), product.getName(), product.getBrand(), product.getPrice(),
                 product.getCategory(), product.getImageName(), product.getCreationDate(),
@@ -103,8 +103,8 @@ public class ProductService {
         );
     }
 
-    public Product toEntity(ProductCreateDTO dto, String imageName) {
-        Product product = new Product();
+    public ProductModel toEntity(ProductCreateDTO dto, String imageName) {
+        ProductModel product = new ProductModel();
 
         product.setName(dto.getName());
         product.setBrand(dto.getBrand());
