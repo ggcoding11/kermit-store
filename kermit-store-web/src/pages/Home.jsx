@@ -19,7 +19,6 @@ import { formatCategory } from "../utils/FormatCategory";
 
 import Loading from "../components/Loading";
 import Header from "../components/Header";
-import Pagination from "react-js-pagination";
 
 import "../css/Home.css";
 import "react-responsive-modal/styles.css";
@@ -41,14 +40,14 @@ const Home = () => {
   useEffect(() => {
     setLoading(true);
 
-    getProducts({ search, field, direction })
+    getProducts({ search, page, field, direction })
       .then((products) => {
         setProducts(products.data);
         setPage(products.data.pageable.pageNumber);
         setLoading(false);
       })
       .catch((error) => console.log(error));
-  }, [search, field, direction, reload]);
+  }, [search, page, field, direction, reload]);
 
   const [openDelete, setOpenDelete] = useState(false);
   const onOpenModalDelete = () => setOpenDelete(true);
@@ -225,12 +224,32 @@ const Home = () => {
                 </div>
 
                 {products.totalPages > 0 && (
-                  <div className="d-flex justify-content-center">
-                    <button className="btn btn-secondary">&laquo;</button>
-                    <div className="p-2">
+                  <div className="d-flex justify-content-center gap-1">
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => {
+                        if (products.first !== true) {
+                          setPage((page) => page - 1);
+                        }
+                      }}
+                      disabled={products.first === true}
+                    >
+                      &laquo;
+                    </button>
+                    <div className="border rounded px-3 p-2">
                       <span>{page + 1}</span>
                     </div>
-                    <button className="btn btn-secondary">&raquo;</button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => {
+                        if (products.last !== true) {
+                          setPage((page) => page + 1);
+                        }
+                      }}
+                      disabled={products.last === true}
+                    >
+                      &raquo;
+                    </button>
                   </div>
                 )}
               </div>
