@@ -3,10 +3,9 @@ import { motion } from "framer-motion";
 import { NumericFormat } from "react-number-format";
 import { useNavigate, useParams } from "react-router-dom";
 import { Modal } from "react-responsive-modal";
+import { ThreeDot } from "react-loading-indicators";
 
 import { getProductById, updateProduct } from "../services/ProductService";
-
-import Loading from "../components/Loading";
 
 import "react-responsive-modal/styles.css";
 import "../css/Update.css";
@@ -79,13 +78,15 @@ const Update = () => {
 
   return (
     <div className="container min-vh-100 d-flex flex-column justify-content-center p-2">
-      <h1 className="text-center mb-4">Edit product</h1>
-
       <form onSubmit={handleUpdate}>
         {loading ? (
-          <Loading />
+          <div className="d-flex justify-content-center align-items-center min-vh-100">
+            <ThreeDot color="#54b546" size="medium" text="" textColor="" />
+          </div>
         ) : (
           <>
+            <h1 className="text-center mb-4">Edit product</h1>
+
             <div className="mb-3">
               <label className="form-label w-100">
                 Name:

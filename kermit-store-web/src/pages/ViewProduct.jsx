@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
-import Loading from "../components/Loading";
+import { ThreeDot } from "react-loading-indicators";
 
 import { getProductById } from "../services/ProductService";
 import { formatCategory } from "../utils/FormatCategory";
 
-const ProductView = () => {
+const ViewProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -37,7 +36,9 @@ const ProductView = () => {
   return (
     <div className="container min-vh-100 d-flex flex-column p-2">
       {loading ? (
-        <Loading />
+        <div className="d-flex justify-content-center align-items-center min-vh-100">
+          <ThreeDot color="#54b546" size="medium" text="" textColor="" />
+        </div>
       ) : (
         <>
           <div className="row d-flex gap-2 mt-4">
@@ -78,4 +79,4 @@ const ProductView = () => {
   );
 };
 
-export default ProductView;
+export default ViewProduct;

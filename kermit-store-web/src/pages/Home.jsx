@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Modal } from "react-responsive-modal";
+import { ThreeDot } from "react-loading-indicators";
 
 import { MdSort } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
@@ -17,7 +18,6 @@ import { BsEyeFill } from "react-icons/bs";
 import { getProducts, deleteProduct } from "../services/ProductService";
 import { formatCategory } from "../utils/FormatCategory";
 
-import Loading from "../components/Loading";
 import Header from "../components/Header";
 
 import "../css/Home.css";
@@ -117,7 +117,9 @@ const Home = () => {
         <div className="row mb-4">
           <div className="col-12">
             {loading ? (
-              <Loading />
+              <div className="d-flex justify-content-center">
+                <ThreeDot color="#54b546" size="medium" text="" textColor="" />
+              </div>
             ) : (
               <div className="d-flex flex-column gap-2">
                 <div className="table-responsive">
