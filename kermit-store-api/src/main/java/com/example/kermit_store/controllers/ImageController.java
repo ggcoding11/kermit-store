@@ -13,19 +13,19 @@ import java.nio.file.Paths;
 @RequestMapping("/images")
 public class ImageController {
     @GetMapping("/{fileName}")
-    public ResponseEntity<Resource> getImage (@PathVariable String fileName) {
+    public ResponseEntity<Resource> findByName(@PathVariable String fileName) {
         try {
-            Path path = Paths.get("images").resolve(fileName);
+            Path imagePath = Paths.get("images").resolve(fileName);
 
-            Resource resource = new UrlResource(path.toUri());
+            Resource imageFile = new UrlResource(imagePath.toUri());
 
-            if (!resource.exists()) {
+            if (!imageFile.exists()) {
                 return ResponseEntity.notFound().build();
             }
 
             return ResponseEntity.ok().header(
-                    "Content-Type", Files.probeContentType(path)
-            ).body(resource);
+                    "Content-Type", Files.probeContentType(imagePath)
+            ).body(imageFile);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }

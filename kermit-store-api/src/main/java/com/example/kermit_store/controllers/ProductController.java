@@ -23,28 +23,28 @@ public class ProductController {
     private ProductService service;
 
     @GetMapping
-    public ResponseEntity<Page<ProductResponseDTO>> listar(
-            @RequestParam(required = false) String search,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String field,
-            @RequestParam(defaultValue = "asc") String direction
+    public ResponseEntity<Page<ProductResponseDTO>> findAll(
+            @RequestParam(required = false) String searchParam,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "id") String sortField,
+            @RequestParam(defaultValue = "asc") String sortDirection
     ) {
-        Page<ProductResponseDTO> request = service.listar(search, page, size, field, direction);
+        Page<ProductResponseDTO> request = service.findAll(searchParam, pageNumber, pageSize, sortField, sortDirection);
 
         return ResponseEntity.status(HttpStatus.OK).body(request);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> listarPorId(@PathVariable Long id) {
-        ProductResponseDTO request = service.listarPorId(id);
+    public ResponseEntity<ProductResponseDTO> findById(@PathVariable Long id) {
+        ProductResponseDTO request = service.findById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(request);
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> criar(@ModelAttribute @Valid ProductCreateDTO product) {
-        ProductResponseDTO request = service.criar(product);
+    public ResponseEntity<ProductResponseDTO> save(@ModelAttribute @Valid ProductCreateDTO product) {
+        ProductResponseDTO request = service.save(product);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(request.getId()).toUri();
@@ -53,16 +53,16 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> atualizar(
+    public ResponseEntity<ProductResponseDTO> update(
             @PathVariable Long id, @ModelAttribute @Valid ProductUpdateDTO product
     ) {
-        ProductResponseDTO request = service.atualizar(id, product);
+        ProductResponseDTO request = service.update(id, product);
 
         return ResponseEntity.status(HttpStatus.OK).body(request);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletar(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         service.deletar(id);
 
         return ResponseEntity.noContent().build();

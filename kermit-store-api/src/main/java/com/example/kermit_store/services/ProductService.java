@@ -25,25 +25,25 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
-    public Page<ProductResponseDTO> listar(
-            String search, int page, int size, String field, String direction
+    public Page<ProductResponseDTO> findAll(
+            String searchParam, int pageNumber, int pageSize, String sortField, String sortDirection
     ) {
-        Sort sort = direction.equals("desc") ? Sort.by(field).descending() : Sort.by(field).ascending();
+        Sort sortConfiguration = sortDirection.equals("desc") ? Sort.by(sortField).descending() : Sort.by(sortField).ascending();
 
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageConfiguration = PageRequest.of(pageNumber, pageSize, sortConfiguration);
 
-        Page<ProductModel> products;
+        Page<ProductModel> productPages;
 
-        if (search == null || search.isBlank()) {
-            products = repository.findAll(pageable);
+        if (searchParam == null || searchParam.isBlank()) {
+            productPages = repository.findAll(pageConfiguration);
         } else {
-            products = repository.findByNameContainingIgnoreCase(search, pageable);
+            productPages = repository.findByNameContainingIgnoreCase(searchParam, pageConfiguration);
         }
 
-        return products.map(this::toDto);
+        return productPages.map(this::toDto);
     }
 
-    public ProductResponseDTO listarPorId(Long id) {
+    public ProductResponseDTO findById(Long id) {
         ProductModel product = repository.findById(id).orElseThrow(
                 () -> new RuntimeException("Product not found")
         );
@@ -51,11 +51,11 @@ public class ProductService {
         return toDto(product);
     }
 
-    public ProductResponseDTO criar(ProductCreateDTO dto) {
+    public ProductResponseDTO save(ProductCreateDTO dto) {
         MultipartFile imageFile = dto.getImage();
         String imageName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
 
-        salvarImagem(imageFile, imageName);
+        saveImageToApi(imageFile, imageName);
 
         ProductModel product = toEntity(dto, imageFile.getOriginalFilename());
 
@@ -66,33 +66,33 @@ public class ProductService {
         repository.deleteById(id);
     }
 
-    public ProductResponseDTO atualizar(Long id, ProductUpdateDTO novo) {
-        ProductModel antigo = repository.findById(id).orElseThrow(
+    public ProductResponseDTO update(Long id, ProductUpdateDTO newProduct) {
+        ProductModel oldProduct = repository.findById(id).orElseThrow(
                 () -> new RuntimeException("Product not found")
         );
 
-        MultipartFile imageFile = novo.getImage();
-
-        String imageName = antigo.getImageName();
+        MultipartFile imageFile = newProduct.getImage();
 
         if (imageFile != null) {
-            imageName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+            String newImageName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
 
-            String oldImageName = antigo.getImageName();
+            saveImageToApi(imageFile, newImageName);
 
-            salvarImagem(imageFile, imageName);
-            deletarImagem(oldImageName);
+            String oldImageName = oldProduct.getImageName();
+
+            deleteImageFromApi(oldImageName);
+
+            oldProduct.setImageName(newImageName);
         }
 
-        antigo.setName(novo.getName());
-        antigo.setBrand(novo.getBrand());
-        antigo.setPrice(novo.getPrice());
-        antigo.setImageName(imageName);
-        antigo.setCategory(novo.getCategory());
-        antigo.setQuantity(novo.getQuantity());
-        antigo.setDescription(novo.getDescription());
+        oldProduct.setName(newProduct.getName());
+        oldProduct.setBrand(newProduct.getBrand());
+        oldProduct.setPrice(newProduct.getPrice());
+        oldProduct.setCategory(newProduct.getCategory());
+        oldProduct.setQuantity(newProduct.getQuantity());
+        oldProduct.setDescription(newProduct.getDescription());
 
-        return toDto(repository.save(antigo));
+        return toDto(repository.save(oldProduct));
     }
 
     public ProductResponseDTO toDto(ProductModel product) {
@@ -118,7 +118,7 @@ public class ProductService {
         return product;
     }
 
-    public void salvarImagem(MultipartFile imageFile, String imageName) {
+    public void saveImageToApi(MultipartFile imageFile, String imageName) {
         try {
             MultipartFile image = imageFile;
             Path folder = Paths.get("images");
@@ -132,17 +132,17 @@ public class ProductService {
                     StandardCopyOption.REPLACE_EXISTING
             );
         } catch (IOException e) {
-            throw new RuntimeException("Erro no salvamento da imagem!");
+            throw new RuntimeException("Failed to save image");
         }
     }
 
-    public void deletarImagem(String imageName) {
+    public void deleteImageFromApi(String imageName) {
         try {
             Path oldImage = Paths.get("images").resolve(imageName);
 
             Files.deleteIfExists(oldImage);
         } catch (IOException e) {
-            throw new RuntimeException("Erro na remoção da imagem!");
+            throw new RuntimeException("Failed to remove image");
         }
     }
 }
