@@ -1,0 +1,17 @@
+.btn-create,
+.btn-cancel {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .btn-create,
+  .btn-cancel {
+    width: 40%;
+  }
+}
+
+.customModal {
+  background-color: rgb(81, 163, 81);
+  border-radius: 1.2rem;
+  color: white;
+}
