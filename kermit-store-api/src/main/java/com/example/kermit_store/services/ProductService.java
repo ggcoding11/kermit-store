@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -57,7 +58,7 @@ public class ProductService {
 
         saveImageToApi(imageFile, imageName);
 
-        ProductModel product = toEntity(dto, imageFile.getOriginalFilename());
+        ProductModel product = toEntity(dto, imageName);
 
         return toDto(repository.save(product));
     }
@@ -111,7 +112,7 @@ public class ProductService {
         product.setQuantity(dto.getQuantity());
         product.setCategory(dto.getCategory());
         product.setPrice(dto.getPrice());
-        product.setCreationDate(dto.getCreationDate());
+        product.setCreationDate(LocalDate.now());
         product.setImageName(imageName);
         product.setDescription(dto.getDescription());
 
@@ -120,7 +121,6 @@ public class ProductService {
 
     public void saveImageToApi(MultipartFile imageFile, String imageName) {
         try {
-            MultipartFile image = imageFile;
             Path folder = Paths.get("images");
 
             if (!Files.exists(folder)) {
@@ -128,7 +128,7 @@ public class ProductService {
             }
 
             Files.copy(
-                    image.getInputStream(), folder.resolve(imageName),
+                    imageFile.getInputStream(), folder.resolve(imageName),
                     StandardCopyOption.REPLACE_EXISTING
             );
         } catch (IOException e) {

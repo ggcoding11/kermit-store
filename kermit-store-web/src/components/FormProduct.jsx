@@ -5,46 +5,60 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Modal } from "react-responsive-modal";
 import { ThreeDot } from "react-loading-indicators";
 
-import { getProductById, updateProduct } from "../services/ProductService";
+import {
+  createProduct,
+  updateProduct,
+  getProductById,
+} from "../services/ProductService";
 
 import "react-responsive-modal/styles.css";
-import "../css/Update.css";
+import "../css/FormProduct.css";
 
 const MAX_LENGTH_TEXT = 200;
 
-const Update = () => {
+const FormProduct = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
 
+  const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState(null);
-  const [creationDate, setCreationDate] = useState(
-    new Date().toISOString().split("T")[0],
-  );
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [blockSubmit, setBlockSubmit] = useState(false);
 
-  useEffect(() => {
-    getProductById(id)
-      .then((product) => {
-        setName(product.data.name);
-        setBrand(product.data.brand);
-        setPrice(product.data.price);
-        setCategory(product.data.category);
-        setQuantity(product.data.quantity);
-        setDescription(product.data.description);
-        setLoading(false);
-      })
-      .catch((error) => console.log(error));
-  }, [id]);
+  const { id: productToBeUpdatedId } = useParams();
 
-  const handleUpdate = (e) => {
+  const [productToBeUpdated, setProductToBeUpdated] = useState(null);
+
+  useEffect(() => {
+    if (productToBeUpdatedId) {
+      setLoading(true);
+
+      getProductById(productToBeUpdatedId)
+        .then((response) => setProductToBeUpdated(response.data))
+        .catch((error) => console.log(error))
+        .finally(() => setLoading(false));
+    }
+  }, [productToBeUpdatedId]);
+
+  useEffect(() => {
+    if (productToBeUpdated) {
+      setId(productToBeUpdated.id);
+      setName(productToBeUpdated.name);
+      setBrand(productToBeUpdated.brand);
+      setPrice(productToBeUpdated.price);
+      setCategory(productToBeUpdated.category);
+      setQuantity(productToBeUpdated.quantity);
+      setDescription(productToBeUpdated.description);
+    }
+  }, [productToBeUpdated]);
+
+  const saveData = (e) => {
     e.preventDefault();
 
     setBlockSubmit(true);
@@ -55,18 +69,27 @@ const Update = () => {
     formData.append("brand", brand);
     formData.append("price", price);
     formData.append("category", category);
-    if (image) {
+
+    if (!productToBeUpdated || (productToBeUpdated && image !== null)) {
       formData.append("image", image);
     }
+
     formData.append("quantity", quantity);
     formData.append("description", description);
 
-    updateProduct(id, formData)
-      .then((response) => {
-        onOpenModal();
-      })
-      .catch((error) => console.log(error))
-      .finally(() => setBlockSubmit(false));
+    productToBeUpdated
+      ? updateProduct(id, formData)
+          .then((response) => {
+            onOpenModal();
+          })
+          .catch((error) => console.log(error))
+          .finally(() => setBlockSubmit(false))
+      : createProduct(formData)
+          .then(() => {
+            onOpenModal();
+          })
+          .catch((error) => console.log(error))
+          .finally(() => setBlockSubmit(false));
   };
 
   const [openModal, setOpenModal] = useState(false);
@@ -78,14 +101,16 @@ const Update = () => {
 
   return (
     <div className="container min-vh-100 d-flex flex-column justify-content-center p-2">
-      <form onSubmit={handleUpdate}>
+      <form onSubmit={saveData}>
         {loading ? (
           <div className="d-flex justify-content-center align-items-center min-vh-100">
             <ThreeDot color="#54b546" size="medium" text="" textColor="" />
           </div>
         ) : (
           <>
-            <h1 className="text-center mb-4">Edit product</h1>
+            <h1 className="text-center mb-4">
+              {productToBeUpdatedId ? "Update Product" : "Create Product"}
+            </h1>
 
             <div className="mb-3">
               <label className="form-label w-100">
@@ -175,6 +200,7 @@ const Update = () => {
                     type="file"
                     accept="image/*"
                     onChange={(e) => setImage(e.target.files[0])}
+                    required={!productToBeUpdated}
                   />
                 </label>
               </div>
@@ -216,7 +242,7 @@ const Update = () => {
                 whileTap={{ scale: 0.95 }}
                 className="btn-create btn btn-primary"
               >
-                Update
+                Save
               </motion.button>
 
               <motion.button
@@ -239,15 +265,15 @@ const Update = () => {
         center
         showCloseIcon={false}
         classNames={{
-          modal: "customModalUpdated",
+          modal: "customModal",
         }}
       >
-        <h1 className="text-center fs-3">The product was updated!</h1>
+        <h1 className="text-center fs-3">The product was saved!</h1>
 
-        <div className="text-center">Product data was updated successfully</div>
+        <div className="text-center">Product data was saved successfully</div>
       </Modal>
     </div>
   );
 };
 
-export default Update;
+export default FormProduct;

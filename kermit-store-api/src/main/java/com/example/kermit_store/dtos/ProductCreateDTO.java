@@ -26,9 +26,6 @@ public class ProductCreateDTO {
     @NotNull(message = "Image file is required")
     private MultipartFile image;
 
-    @NotNull(message = "Creation date is required")
-    private LocalDate creationDate;
-
     @NotNull(message = "Quantity is required")
     @PositiveOrZero(message = "Quantity cannot be less than 0")
     private Integer quantity;
