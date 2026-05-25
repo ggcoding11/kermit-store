@@ -28,10 +28,10 @@ const Home = () => {
 
   const [products, setProducts] = useState(null);
 
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState("");
-  const [field, setField] = useState("");
-  const [direction, setDirection] = useState("");
+  const [searchParam, setSearchParam] = useState("");
+  const [pageNumber, setPageNumber] = useState("");
+  const [sortField, setSortField] = useState("");
+  const [sortDirection, setSortDirection] = useState("");
 
   const [reload, setReload] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -40,14 +40,19 @@ const Home = () => {
   useEffect(() => {
     setLoading(true);
 
-    getProducts({ search, page, field, direction })
+    getProducts({
+      searchParam: searchParam,
+      pageNumber: pageNumber,
+      sortField: sortField,
+      sortDirection: sortDirection,
+    })
       .then((products) => {
         setProducts(products.data);
-        setPage(products.data.pageable.pageNumber);
+        setPageNumber(products.data.pageable.pageNumber);
         setLoading(false);
       })
       .catch((error) => console.log(error));
-  }, [search, page, field, direction, reload]);
+  }, [searchParam, pageNumber, sortField, sortDirection, reload]);
 
   const [openDelete, setOpenDelete] = useState(false);
   const onOpenModalDelete = () => setOpenDelete(true);
@@ -69,13 +74,15 @@ const Home = () => {
 
   const SortButton = (props) => {
     const sortByField = (field) => {
-      setField(field);
+      setSortField(field);
 
-      direction === "desc" ? setDirection("asc") : setDirection("desc");
+      sortDirection === "desc"
+        ? setSortDirection("asc")
+        : setSortDirection("desc");
     };
 
-    return field === props.field ? (
-      direction === "asc" ? (
+    return sortField === props.field ? (
+      sortDirection === "asc" ? (
         <BsSortUp role="button" onClick={() => sortByField(props.field)} />
       ) : (
         <BsSortDown role="button" onClick={() => sortByField(props.field)} />
@@ -107,8 +114,8 @@ const Home = () => {
                 type="text"
                 className="form-control"
                 placeholder="Search here!"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={searchParam}
+                onChange={(e) => setSearchParam(e.target.value)}
               />
             </div>
           </div>
@@ -231,7 +238,7 @@ const Home = () => {
                       className="btn btn-secondary"
                       onClick={() => {
                         if (products.first !== true) {
-                          setPage((page) => page - 1);
+                          setPageNumber((pageNumber) => pageNumber - 1);
                         }
                       }}
                       disabled={products.first === true}
@@ -239,13 +246,13 @@ const Home = () => {
                       &laquo;
                     </button>
                     <div className="border rounded px-3 p-2">
-                      <span>{page + 1}</span>
+                      <span>{pageNumber + 1}</span>
                     </div>
                     <button
                       className="btn btn-secondary"
                       onClick={() => {
                         if (products.last !== true) {
-                          setPage((page) => page + 1);
+                          setPageNumber((pageNumber) => pageNumber + 1);
                         }
                       }}
                       disabled={products.last === true}

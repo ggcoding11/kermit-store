@@ -1,1 +1,0 @@
-- Parei na implementação da paginação no front
