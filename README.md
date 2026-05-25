@@ -168,12 +168,6 @@ adaptando tabelas e colunas automaticamente sempre que os modelos sofrem altera�
 
 ---
 
-## 📸 Preview do Projeto
-
-> Adicione aqui screenshots da aplicação futuramente.
-
----
-
 ## 👨‍💻 Autor
 
 Desenvolvido por Gustavo Gomes 🚀
