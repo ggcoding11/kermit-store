@@ -237,9 +237,8 @@ const Home = () => {
                     <button
                       className="btn btn-secondary"
                       onClick={() => {
-                        if (products.first !== true) {
+                        products.first !== true &&
                           setPageNumber((pageNumber) => pageNumber - 1);
-                        }
                       }}
                       disabled={products.first === true}
                     >
@@ -251,9 +250,8 @@ const Home = () => {
                     <button
                       className="btn btn-secondary"
                       onClick={() => {
-                        if (products.last !== true) {
+                        products.last !== true &&
                           setPageNumber((pageNumber) => pageNumber + 1);
-                        }
                       }}
                       disabled={products.last === true}
                     >
