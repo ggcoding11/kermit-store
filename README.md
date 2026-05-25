@@ -1,10 +1,9 @@
 # Kermit Store
 
-<img width="800" height="500" alt="kermit_store" src="https://github.com/user-attachments/assets/4f24e2b8-a781-408b-a24f-177a019c6f7d" />
-
-
-
 O **Kermit Store** é uma aplicação Full-Stack desenvolvida para a gestão e visualização de produtos de um e-commerce. O projeto é estruturado utilizando uma API RESTful robusta em Java com Spring Boot e uma interface web moderna, responsiva e interativa construída com React e Vite.
+
+
+<img width="800" height="500" alt="kermit_store" src="https://github.com/user-attachments/assets/4f24e2b8-a781-408b-a24f-177a019c6f7d" />
 
 ---
 
