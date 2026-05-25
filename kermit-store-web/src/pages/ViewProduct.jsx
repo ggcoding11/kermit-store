@@ -29,8 +29,6 @@ const ViewProduct = () => {
         setQuantity(product.data.quantity);
         setDescription(product.data.description);
         setLoading(false);
-
-        console.log(product.data);
       })
       .catch((error) => console.log(error));
   }, [id]);
